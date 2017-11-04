@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:include="fragments/header :: head">
+</head>
+<body>
+	<nav th:include="fragments/navbar :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="blogpost-box">
+					<div class="card-body">
+						<h2 class="card-title" th:text="${post.title}"></h2> <hr/>
+						<ul class="inline blogpost-header">
+						  <li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <a th:href="@{'/szerzo/'+post.author.name}" th:text="${post.author.name}"></a></li>
+						  <li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
+						  <li th:each="t : ${post.tags}" class="list-inline-item ">
+							<a th:href="@{'/cimke/'+${t.tag}}" th:text="'#'+${t.tag}"></a>
+						  </li>
+						</ul>
+					</div>
+					<img class="card-img-top" src="http://placehold.it/750x300" th:alt="${post.title}"/>
+					<div class="card-body">
+						<p class="card-text blogpost-excerpt" th:text="${post.content}"></p>
+					</div>
+				</div>
+				<hr/>
+				<hr/>
+       </div>
+       
+       <!-- Sidebar Widgets Column -->
+       <div class="col-md-4">
+       
+		<!-- Side Widget -->
+         <div class="card my-4">
+           <h5 class="card-header">Szerző</h5>
+           <div class="card-body text-center">
+           	<img th:src="${post.author.avatar}" class="img-responsive"/>
+           	<br/><br/>
+           	<ul class="inline">
+           		<li class="list-inline-item"><a th:if="${post.author.fbProfile != null}" th:href="${post.author.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
+           		<li class="list-inline-item"><a th:if="${post.author.twitterProfile != null}" th:href="${post.author.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
+           		<li class="list-inline-item"><a th:if="${post.author.linkedinProfile != null}" th:href="${post.author.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
+           	</ul>
+           </div>
+         </div>
+         <!-- Categories Widget -->
+          <div class="card my-4">
+           <h5 class="card-header">Címkék</h5>
+           <div class="card-body">
+             <div class="row">
+               <div class="col-lg-12">
+                 <a th:each="t : ${tags}" th:href="@{'/cimke/' + ${t.tag}}" th:text="'#'+${t.tag}"></a>
+               </div>
+             </div>
+           </div>
+         </div>
+
+       </div>
+
+     </div>
+</div>
+     <footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>
