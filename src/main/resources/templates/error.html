@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:include="fragments/header :: head">
+</head>
+<body>
+	<nav th:include="fragments/navbar :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<div class="page-header"><h1 th:text="${status}"></h1></div>
+				<p th:text="${error}"></p>
+			</div>
+		</div>
+	</div>
+     <footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>
