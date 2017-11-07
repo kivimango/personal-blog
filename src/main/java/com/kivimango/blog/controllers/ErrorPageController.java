@@ -1,33 +1,51 @@
 package com.kivimango.blog.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.ErrorAttributes;
+import org.springframework.boot.autoconfigure.web.ErrorController;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import com.kivimango.blog.exception.BlogPostNotFoundException;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * Handling the exceptions thrown by the controllers
- * 
+ * Displaying a nice error page with the html error code and message.
+ * Overrides the default white label page.
+ * (In the application.properties the default white label should be turned off)
  * @author kivimango
  * @since 0.1
  * @version 0.1
  */
 
-@ControllerAdvice
-public class ErrorPageController {
+@Controller
+public class ErrorPageController implements ErrorController {
+
+	private static final String ERR_PATH = "/error";
 	
-	@Value("${blog.title}")
-	private String title;
+	private ErrorAttributes errorAttributes;
 	
-	@Value("${blog.description}")
-	private String description;
+	@GetMapping(ERR_PATH)
+	public String errorPage(Model model, HttpServletRequest request) {
+		RequestAttributes attrs = new ServletRequestAttributes(request);
+		Map<String, Object> errors = errorAttributes.getErrorAttributes(attrs, true);
+		model.addAttribute("error", errors.get("error"));
+		//model.addAttribute("message", errors.get("message"));
+		//model.addAttribute("path", errors.get("path"));
+		model.addAttribute("status", errors.get("status"));
+		return "error";
+	}
 	
-	@ExceptionHandler(BlogPostNotFoundException.class)
-	public String postNotFound(Model model) {
-		model.addAttribute("blogTitle", title);
-		model.addAttribute("title", title + " - " + description);
-		return "/error/404";
+	@Override
+	public String getErrorPath() {
+		return ERR_PATH;
+	}
+	
+	@Autowired
+	public void SetErrorAttributes(ErrorAttributes errAtrrs) {
+		this.errorAttributes = errAtrrs;
 	}
 
 }
