@@ -2,6 +2,8 @@ package com.kivimango.blog.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.kefirsf.bb.BBProcessorFactory;
+import org.kefirsf.bb.TextProcessor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +18,10 @@ import com.kivimango.blog.domain.entity.Tag;
 
 public class BlogPostConverter {
 	
-	AuthorConverter authorConverter;
+	private AuthorConverter authorConverter;
+	
+	private TextProcessor bbCodeConverter = BBProcessorFactory
+			.getInstance().create();
 
 	public BlogPostConverter(AuthorConverter authorConverter) {
 		this.authorConverter = authorConverter;
@@ -36,7 +41,7 @@ public class BlogPostConverter {
 		converted.setTitle(post.getTitle());
 		converted.setSlug(post.getSlug());
 		converted.setAuthor(authorConverter.convert(post.getAuthor()));
-		converted.setContent(post.getContent());
+		converted.setContent(bbCodeConverter.process(post.getContent()));
 		converted.setUploaded(post.getUploaded());
 		converted.setEdited(post.getEdited());
 		
