@@ -3,6 +3,8 @@ package com.kivimango.blog.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.kivimango.blog.domain.BlogPostView;
+import com.kivimango.blog.domain.form.BlogPostForm;
+import com.kivimango.blog.exception.AuthorNotFoundException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 
 /**
@@ -28,5 +30,21 @@ public interface BlogPostService {
 	 */
 	
 	BlogPostView getPostBySlug(String slug) throws BlogPostNotFoundException;
+
+	/**
+	 * Saves a new blog post to the database
+	 * @param form
+	 * @throws AuthorNotFoundException 
+	 */
+	
+	void save(BlogPostForm form) throws AuthorNotFoundException;
+	
+	/**
+	 * Makes an URL slice from the title.Posts can be reached by their slug, 
+	 * @param title
+	 * @return
+	 */
+	
+	String makeSlugFrom(String title);
 
 }
