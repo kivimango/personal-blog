@@ -20,7 +20,7 @@
 					</div>
 					<img class="card-img-top" src="http://placehold.it/750x300" th:alt="${post.title}"/>
 					<div class="card-body">
-						<p class="card-text blogpost-excerpt" th:text="${post.content}"></p>
+						<p class="card-text blogpost-excerpt" th:utext="${post.content}"></p>
 					</div>
 				</div>
 				<hr/>
