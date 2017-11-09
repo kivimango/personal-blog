@@ -15,4 +15,6 @@ import com.kivimango.blog.domain.entity.Tag;
 public interface TagRepository extends JpaRepository<Tag, Integer> {
 
 	public List<Tag> findTop10ByOrderByTagAsc();
+
+	public Tag findByTag(String tag);
 }
