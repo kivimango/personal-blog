@@ -29,4 +29,11 @@ public class TagView {
 		this.tag = tag;
 	}
 
+	@Override
+	public String toString() {
+		return tag;
+	}
+	
+	
+
 }
