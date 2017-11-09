@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import com.kivimango.blog.services.AdminService;
+import com.kivimango.blog.services.AntiBruteforceService;
 
 /**
  * @author kivimango
@@ -18,7 +18,7 @@ public class AdminAuthController {
 	private static final String LOGIN_PAGE = "admin/login";
 	
 	@Autowired
-	private AdminService loginService;
+	private AntiBruteforceService loginService;
 	
 	/**
 	 * Displaying a login form to the unauthenticated user.
