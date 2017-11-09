@@ -1,10 +1,13 @@
 package com.kivimango.blog.domain.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -21,7 +24,9 @@ public class Tag {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
 	
-	@ManyToOne(targetEntity=BlogPost.class)
+	@ManyToMany(cascade=CascadeType.ALL)
+	private List<BlogPost> post;
+
 	private String tag;
 
 	public Tag() {
@@ -35,6 +40,14 @@ public class Tag {
 		this.id = id;
 	}
 
+	public List<BlogPost> getPost() {
+		return post;
+	}
+
+	public void setPost(List<BlogPost> post) {
+		this.post = post;
+	}
+	
 	public String getTag() {
 		return tag;
 	}
