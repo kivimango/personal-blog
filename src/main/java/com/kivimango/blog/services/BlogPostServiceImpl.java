@@ -3,22 +3,21 @@ package com.kivimango.blog.services;
 import java.text.Normalizer;
 import java.text.Normalizer.Form;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.AuthorConverter;
 import com.kivimango.blog.domain.BlogPostConverter;
 import com.kivimango.blog.domain.BlogPostView;
-import com.kivimango.blog.domain.entity.Author;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
 import com.kivimango.blog.domain.form.BlogPostForm;
-import com.kivimango.blog.exception.AuthorNotFoundException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
+import com.kivimango.blog.repositories.AdminRepository;
 import com.kivimango.blog.repositories.BlogPostRepository;
 import com.kivimango.blog.repositories.TagRepository;
 
@@ -32,15 +31,18 @@ import com.kivimango.blog.repositories.TagRepository;
 public class BlogPostServiceImpl implements BlogPostService {
 	
 	private BlogPostRepository postRepository;
-	
-	@Autowired
-	private AuthorService authorRepository;
-	
-	@Autowired
+	private AdminRepository admins;
 	private TagRepository tagRepository;
 	
 	private BlogPostConverter converter = new BlogPostConverter(new AuthorConverter());
 	
+	@Autowired
+	public BlogPostServiceImpl(BlogPostRepository postRepository, AdminRepository admins, TagRepository tagRepository) {
+		this.postRepository = postRepository;
+		this.admins = admins;
+		this.tagRepository = tagRepository;
+	}
+
 	@Override
 	public Page<BlogPostView> findAll(Pageable pageable) {
 		Page<BlogPost> posts = postRepository.findAll(pageable);
@@ -56,27 +58,33 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	@Override
-	public void save(BlogPostForm form) throws AuthorNotFoundException {
+	public void save(BlogPostForm form, AdminDetail author) {
 		BlogPost newPost = new BlogPost();
 		newPost.setTitle(form.getTitle());
 		newPost.setSlug(makeSlugFrom(form.getTitle()));
-		newPost.setAuthor(findAuthor(form.getAuthor()));
+		newPost.setAuthor(admins.findByUsername("Hicks"));
 		newPost.setContent(form.getContent());
 		newPost.setUploaded(new Date());
-		if(form.getTags() != null) {
-			newPost.setTags(makeTagsFromInputField(form.getTags(), newPost));
-		}
+		newPost.setTags(makeTagsFromInputField(form.getTags(), newPost));
 		postRepository.save(newPost);
 	}
-
-	private Author findAuthor(String name) throws AuthorNotFoundException {
-		Author author = authorRepository.findByName(name);
-		if(author == null) {
-			throw new AuthorNotFoundException("Author not found: " + name);
-		}
-		return author;
-	}
 	
+	@Override
+	public void edit(String slug, BlogPostForm form) throws BlogPostNotFoundException {
+		BlogPost edited = postRepository.getPostBySlug(slug);
+		if(edited == null) throw new BlogPostNotFoundException("The requested blog post not found !");
+		else {
+			if(!edited.getTitle().equals(form.getTitle())) {
+				edited.setTitle(form.getTitle());
+				edited.setSlug(makeSlugFrom(form.getTitle()));
+			}
+			if(!edited.getContent().equals(form.getContent())) edited.setContent(form.getContent());
+			edited.setEdited(new Date());
+			edited.setTags(makeTagsFromInputField(form.getTags(), edited));
+			postRepository.save(edited);
+		}
+	}
+
 	public String makeSlugFrom(String title) {
 		return Normalizer.normalize(title, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").
 			toLowerCase().replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
@@ -84,30 +92,40 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	private List<Tag> makeTagsFromInputField(String value, BlogPost post) {
-		String[] array = value.split(",");
-		List<Tag> converted = new ArrayList<Tag>();
-		for(int i = 0; i<array.length; i++) {
-			findTagFromDbOrAddToIt(array[i], post);
+		String[] tags = value.split(",");
+		if(tags.length > 0) {
+			List<Tag> converted = new ArrayList<Tag>(tags.length);
+			for(int i = 0; i<tags.length; i++) {
+				converted.add(findTagFromDbOrAddToIt(tags[i], post));
+			}
+			return converted;
 		}
-		return converted;
+		return new ArrayList<Tag>(0);
 	}
 	
 	private Tag findTagFromDbOrAddToIt(String tag, BlogPost post) {
-		Tag tagFromDb = tagRepository.findByTag(tag);
-		if(tagFromDb != null) {
-			return tagFromDb;
+		Tag existingTag = tagRepository.findByTag(tag);
+		if(existingTag != null) {
+			return addExistingTagToPost(post, existingTag);
 		} else {
-			Tag newTag = new Tag();
-			newTag.setTag(tag);
-			newTag.setPost(Arrays.asList(post));
-			tagRepository.save(newTag);
-			return newTag;
+			return addNewTagToDbAndToPost(tag);
 		}
 	}
 
-	@Autowired
-	public void setBlogPostRepository(BlogPostRepository repo) {
-		this.postRepository = repo;
+	private Tag addExistingTagToPost(BlogPost post, Tag existingTag) {
+		List<BlogPost> postsOfExistingTag = existingTag.getPost();
+		postsOfExistingTag.add(post);
+		existingTag.setPost(postsOfExistingTag);
+		return existingTag;
 	}
-
+	
+	private Tag addNewTagToDbAndToPost(String tag) {
+		Tag newTag = new Tag();
+		newTag.setTag(tag);
+		List<BlogPost> taggedPost = new ArrayList<BlogPost>(1);
+		newTag.setPost(taggedPost);
+		tagRepository.save(newTag);
+		return newTag;
+	}
+	
 }
