@@ -4,10 +4,6 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
 public class BlogPostForm {
-	
-	@NotNull
-	@Length(min=3, max=30)
-	private String author;
 
 	@NotNull
 	@Length(min=3, max=150)
@@ -20,14 +16,6 @@ public class BlogPostForm {
 	@Length(max=500)
 	private String tags;
 	
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
 	public String getTitle() {
 		return title;
 	}
