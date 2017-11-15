@@ -12,6 +12,9 @@
 		<h1>Posztok</h1>
 			<a th:href="@{/dashboard/posts/compose}" class="btn btn-success pull-right">Új bejegyzés írása</a>
 			<br/>
+			<th:block th:if="${!#strings.isEmpty(flashMessage)}">
+		  		<div th:text="${flashMessage}" class="alert alert-success" style="margin-top:10px"></div>
+		  	</th:block>
           <table class="table table-responsive table-striped table-hover pt-3">
           	<thead><tr><th>Cím</th><th>Elérési URL</th><th>Szerző</th><th>Feltöltve</th><th>Szerkesztve</th>
           		<th>Műveletek</th></tr></thead>
