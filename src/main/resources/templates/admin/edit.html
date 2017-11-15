@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:include="admin/fragments/header :: head">
+</head>
+<body>
+	<link rel="stylesheet" th:href="@{/js/sceditor/themes/default.min.css}" />
+	<link rel="stylesheet" th:href="@{/css/jquery.tagit.css}" />
+	<link rel="stylesheet" type="text/css" href="http://code.jquery.com/ui/1.9.1/themes/redmond/jquery-ui.css"/>
+<nav th:include="admin/fragments/navbar :: nav"></nav>
+<div class="container">
+	<div class="row">
+	<nav th:include="admin/fragments/menu :: nav"></nav>
+	
+	<div role="main" class="col-sm-9 ml-sm-auto col-md-10">
+		<form th:action="@{'/dashboard/posts/edit/'} + ${post.slug}" method="post" th:object="${post}">
+			<fieldset>
+				<legend>Blogbejegyzés szerkesztése</legend>
+			</fieldset>
+              	<div class="alert alert-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Hibás cím!</div>
+				<div class="form-group">
+              		<input type="text" placeholder="Cím" name="title" required="required" autofocus="autofocus" class="form-control" th:field="*{title}"/>
+              		<small class="text-muted">Minimum 3, maximum 150 karakter.<br/>Figyelem ! A cím módosításával a bejegyzést azonosító URL darabka is megváltozik!</small>
+              	</div>
+              	<div class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Hibás tartalom!</div>
+              	<div class="form-group">
+              		<textarea id="editor" placeholder="Tartalom" name="content" required="required" class="form-control bbcode-editor" rows="10" th:field="*{content}">Tartalom</textarea>
+              		<small class="text-muted">Minimum 3, maximum 10000 karakter.</small>
+              	</div>
+              	<div class="form-group">
+              		<input type="text" id="tags" placeholder="Címkék" class="form-control" th:field="*{tags}"/>
+              		<small class="text-muted">Szóközzel legyenek elválasztva</small>
+              	</div>
+              	<div class="form-group">
+              		<input type="submit" class="btn btn-success" value="Mentés"/>
+              	</div>
+		</form>
+    </div>
+	</div>
+</div>
+<footer th:include="fragments/footer :: footer"></footer>
+
+<script th:src="@{/js/sceditor/jquery.sceditor.bbcode.min.js}"></script>
+<script th:src="@{/js/sceditor/languages/hu.js}"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
+<script th:src="@{/js/plugins/tag-it.min.js}"></script>
+	<script>
+	function determineEditorLanguage() {
+		var languages = ['ar', 'ca', 'cn','cs', 'de', 'el', 'es',
+			'et', 'fa', 'fr', 'gl', 'hu', 'it', 'ja', 'lt', 'nb', 'nl',
+			'pl', 'pt', 'ru', 'sv', 'tr', 'tw', 'uk', 'vi'];
+		
+		if (navigator.languages != undefined) 
+			var browserLang = navigator.languages[0]
+		 if( languages.indexOf(browserLang) > -1 ) {
+			 return browserLang;
+		 }
+		 else 
+		  return 'en';
+	}
+
+	var locale = determineEditorLanguage();	
+		
+    $(function() {
+        // Replace all textarea tags with SCEditor
+        $('textarea').sceditor({
+            plugins: 'bbcode',
+            style: 'js/sceditor/jquery.sceditor.default.min.css',
+            emoticonsRoot : '/image/',
+            locale: locale
+        });
+    });
+    </script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $("#tags").tagit();
+    });
+	</script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		var text = document.getElementById('editor').value;
+		var bbcode = $("#editor").sceditor('instance').toBBCode(text);
+		$("#editor").sceditor('instance').val(bbcode);
+    });
+	</script>
+</body>
+</html>
