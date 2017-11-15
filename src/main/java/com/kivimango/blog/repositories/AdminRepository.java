@@ -13,6 +13,6 @@ import com.kivimango.blog.domain.entity.Admin;
 @Repository
 public interface AdminRepository extends JpaRepository<Admin, Short> {
 	
-	Admin findAdminByUsername(String username);
+	Admin findByUsername(String username);
 
 }
