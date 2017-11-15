@@ -7,16 +7,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.entity.Admin;
 import com.kivimango.blog.domain.entity.LoginAttempt;
 import com.kivimango.blog.repositories.AdminRepository;
@@ -29,7 +27,6 @@ import com.kivimango.blog.repositories.LoginAttemptRepository;
  */
 
 @Service
-@CacheConfig()
 public class AdminAuthServiceImpl implements UserDetailsService, AntiBruteforceService {
 	
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -53,11 +50,11 @@ public class AdminAuthServiceImpl implements UserDetailsService, AntiBruteforceS
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Admin admin = admins.findAdminByUsername(username);
+		Admin admin = admins.findByUsername(username);
 		if(admin == null) throw new UsernameNotFoundException("No administrator found with the name : " + username);
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		return new User(admin.getUsername(), admin.getPassword(), grantedAuthorities);
+		return new AdminDetail(admin);
 	}
 	
 	@Override
