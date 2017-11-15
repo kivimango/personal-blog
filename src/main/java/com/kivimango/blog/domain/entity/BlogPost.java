@@ -3,7 +3,6 @@ package com.kivimango.blog.domain.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -39,7 +38,7 @@ public class BlogPost {
 	private String slug;
 	
 	@ManyToOne
-	private Author author;
+	private Admin author;
 	
 	@Column(length=10000)
 	private String content;
@@ -52,6 +51,10 @@ public class BlogPost {
 	private List<Tag> tags = new ArrayList<Tag>(0);
 
 	public BlogPost() {
+	}
+	
+	public Integer getId() {
+		return id;
 	}
 
 	public String getTitle() {
@@ -70,11 +73,11 @@ public class BlogPost {
 		this.slug = slug;
 	}
 
-	public Author getAuthor() {
+	public Admin getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Author author) {
+	public void setAuthor(Admin author) {
 		this.author = author;
 	}
 
