@@ -9,17 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.form.BlogPostForm;
-import com.kivimango.blog.exception.AuthorNotFoundException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
-import com.kivimango.blog.services.AuthorService;
 import com.kivimango.blog.services.BlogPostService;
 
 /**
+ * BlogPost CRUD operations.
  * 
  * @author kivimango
  * @since 0.1
@@ -31,17 +31,16 @@ import com.kivimango.blog.services.BlogPostService;
 public class DashboardController {
 	
 	private BlogPostService blogposts;
-	private AuthorService authors;
 	
 	private static final String POSTS_LIST = "admin/postsList";
 	private static final String MAIN_PAGE = "admin/dashboard";
 	private static final String POST_COMPOSE_FORM = "admin/compose";
 	private static final String POST_EDIT_FORM = "admin/edit";
+	private static final String REDIRECT_TO_DASHBOARD_POSTS = "redirect:/dashboard/posts";
 	
 	@Autowired
-	public DashboardController(BlogPostService blogposts, AuthorService authors) {
+	public DashboardController(BlogPostService blogposts) {
 		this.blogposts = blogposts;
-		this.authors = authors;
 	}
 
 	@GetMapping("/dashboard")
@@ -50,7 +49,11 @@ public class DashboardController {
 	}
 	
 	@GetMapping("/dashboard/posts")
-	public String listPosts(Model model, Pageable pageable, @AuthenticationPrincipal AdminDetail currentAdmin) {
+	public String listPosts(@ModelAttribute("message") String flashMessage, Model model, 
+			Pageable pageable, RedirectAttributes attr, @AuthenticationPrincipal AdminDetail currentAdmin) {
+		if(flashMessage != null) {
+			model.addAttribute("flashMessage", flashMessage);
+		}
 		model.addAttribute("posts", blogposts.findAll(pageable));
 		model.addAttribute("admin", currentAdmin);
 		return POSTS_LIST;
@@ -59,37 +62,40 @@ public class DashboardController {
 	@GetMapping("/dashboard/posts/compose")
 	public String newPostForm(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
 		model.addAttribute("admin", currentAdmin);
-		model.addAttribute("authors", authors.findAll());
 		model.addAttribute("post", new BlogPostForm());
 		return POST_COMPOSE_FORM;
 	}
 	
 	@PostMapping("/dashboard/posts/compose")
-	public String addPost(@Valid BlogPostForm form, BindingResult result, final RedirectAttributes redAttrs, Model model) {
+	public String addPost(@Valid BlogPostForm form, BindingResult result, final RedirectAttributes redAttrs, Model model, 
+			@AuthenticationPrincipal AdminDetail currentAdmin) {
+		System.out.println(currentAdmin.getUsername());
 		if(result.hasErrors()) {
-			model.addAttribute("authors", authors.findAll());
 			model.addAttribute("post", form);
 			return POST_COMPOSE_FORM;
 		}
-		try { 
-			blogposts.save(form);
-		} catch (AuthorNotFoundException e) {
-			model.addAttribute("authors", authors.findAll());
-			result.rejectValue("author", e.getMessage());
-			model.addAttribute("post", form);
-			return POST_COMPOSE_FORM;
-		}
+		blogposts.save(form, currentAdmin);
 		redAttrs.addFlashAttribute("message", "Blogbejegyzés sikeresen feltöltve !");
-		return "redirect:/dashboard/posts";
+		return REDIRECT_TO_DASHBOARD_POSTS;
 	}
 	
 	@GetMapping("/dashboard/posts/edit/{slug}")
 	public String editPostForm(@PathVariable String slug, Model model, @AuthenticationPrincipal AdminDetail currentAdmin) throws BlogPostNotFoundException {
 		model.addAttribute("admin", currentAdmin);
-		model.addAttribute("authors", authors.findAll());
 		model.addAttribute("post", blogposts.getPostBySlug(slug));
-		model.addAttribute("convertHtmlToBB", true);
 		return POST_EDIT_FORM;
+	}
+	
+	@PostMapping("/dashboard/posts/edit/{slug}")
+	public String editPost(@PathVariable String slug, Model model, @Valid BlogPostForm form, 
+			BindingResult result, RedirectAttributes redAttrs, @AuthenticationPrincipal AdminDetail currentAdmin) throws BlogPostNotFoundException {
+		if(result.hasErrors()) {
+			model.addAttribute("post", form);
+			return POST_EDIT_FORM;
+		}
+		blogposts.edit(slug, form);
+		redAttrs.addFlashAttribute("message", "Blogbejegyzés sikeresen szerkesztve !");
+		return REDIRECT_TO_DASHBOARD_POSTS;
 	}
 
 }
