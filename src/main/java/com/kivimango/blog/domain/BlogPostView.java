@@ -29,6 +29,8 @@ public class BlogPostView {
 	private Date edited;
 	
 	private List<TagView> tags = new ArrayList<TagView>(0);
+	
+	private boolean hidden;
 
 	public BlogPostView() {	
 	}
@@ -87,6 +89,14 @@ public class BlogPostView {
 
 	public void setTags(List<TagView> tags) {
 		this.tags = tags;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
 	}
 	
 }

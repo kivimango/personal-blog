@@ -50,6 +50,8 @@ public class BlogPost {
 	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Tag> tags = new ArrayList<Tag>(0);
 
+	private boolean hidden;
+
 	public BlogPost() {
 	}
 	
@@ -111,6 +113,14 @@ public class BlogPost {
 
 	public void setTags(List<Tag> tags) {
 		this.tags = tags;
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+	
+	public void setHidden(boolean status) {
+		this.hidden = status;
 	}
 
 }

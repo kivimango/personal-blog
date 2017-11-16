@@ -44,6 +44,7 @@ public class BlogPostConverter {
 		converted.setContent(bbCodeConverter.process(post.getContent()));
 		converted.setUploaded(post.getUploaded());
 		converted.setEdited(post.getEdited());
+		converted.setHidden(post.isHidden());
 		
 		List<TagView> convertedTags = new ArrayList<TagView>(0);
 		for(Tag t : post.getTags()) {

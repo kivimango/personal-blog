@@ -44,6 +44,12 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 
 	@Override
+	public Page<BlogPostView> findAllExcludeHidden(Pageable pageable) {
+		Page<BlogPost> posts = postRepository.findAllByHidden(pageable, false);
+		return converter.convert(posts, pageable);
+	}
+	
+	@Override
 	public Page<BlogPostView> findAll(Pageable pageable) {
 		Page<BlogPost> posts = postRepository.findAll(pageable);
 		return converter.convert(posts, pageable);
@@ -52,9 +58,9 @@ public class BlogPostServiceImpl implements BlogPostService {
 	@Override
 	public BlogPostView getPostBySlug(String slug) throws BlogPostNotFoundException {
 		BlogPost post = postRepository.getPostBySlug(slug);
-		if(post != null) {
-			return converter.convert(post);
-		} else throw new BlogPostNotFoundException("The requested blog post not found !");	
+		if(post == null || post.isHidden()) {
+			throw new BlogPostNotFoundException("The requested blog post not found !");
+		} else return converter.convert(post);
 	}
 	
 	@Override
@@ -128,4 +134,22 @@ public class BlogPostServiceImpl implements BlogPostService {
 		return newTag;
 	}
 	
+	@Override
+	public void hideOrPublish(String slug) throws BlogPostNotFoundException {
+		BlogPost post = postRepository.getPostBySlug(slug);
+		if(post == null) throw new BlogPostNotFoundException("The requested blog post not found !");
+		else {
+			if(!post.isHidden()) hide(post); else publish(post);
+			postRepository.save(post);
+		}
+	}
+
+	private void hide(BlogPost post) {
+		post.setHidden(true);
+	}
+	
+	private void publish(BlogPost post) {
+		post.setHidden(false);
+	}
+
 }

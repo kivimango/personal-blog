@@ -16,9 +16,17 @@ import com.kivimango.blog.exception.BlogPostNotFoundException;
 public interface BlogPostService {
 	
 	/**
-	 * Finding posts for the home page ordered by the upload date with pagination.
+	 * Finding the public posts for the home page ordered by the upload date with pagination.
 	 * @param pageable
 	 * @return The list of the posts.
+	 */
+	
+	Page<BlogPostView> findAllExcludeHidden(Pageable pageable);
+	
+	/**
+	 * Finding all the posts including hidden ordered by the upload date with pagination.
+	 * @param pageable
+	 * @return
 	 */
 	
 	Page<BlogPostView> findAll(Pageable pageable);
@@ -32,7 +40,7 @@ public interface BlogPostService {
 	BlogPostView getPostBySlug(String slug) throws BlogPostNotFoundException;
 	
 	/**
-	 * Saves a new blog post to the database
+	 * Saves a new post to the database
 	 * @param form
 	 * @throws AuthorNotFoundException 
 	 */
@@ -40,7 +48,7 @@ public interface BlogPostService {
 	void save(BlogPostForm form, AdminDetail author);
 	
 	/**
-	 * Modifies an existing blog post in the database
+	 * Modifies an existing post in the database
 	 * @param slug
 	 * @param form
 	 * @throws BlogPostNotFoundException
@@ -55,5 +63,13 @@ public interface BlogPostService {
 	 */
 	
 	String makeSlugFrom(String title);
+
+	/**
+	 * Hide a particular post if its published, or publishes again if its hidden identified by the given slug.
+	 * @param slug
+	 * @throws BlogPostNotFoundException 
+	 */
+	
+	void hideOrPublish(String slug) throws BlogPostNotFoundException;
 
 }

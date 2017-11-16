@@ -17,15 +17,18 @@
 		  	</th:block>
           <table class="table table-responsive table-striped table-hover pt-3">
           	<thead><tr><th>Cím</th><th>Elérési URL</th><th>Szerző</th><th>Feltöltve</th><th>Szerkesztve</th>
-          		<th>Műveletek</th></tr></thead>
+          		<th>Rejtett?</th><th>Műveletek</th></tr></thead>
           	<tr th:each="p : ${posts}">
           		<td><a th:href="@{'/poszt/'+ ${p.slug}}" th:text="${p.title}" target="new"></a></td><td th:text="${p.slug}"></td><td th:text="${p.author.name}"></td>
           		<td th:text="${#dates.format(p.uploaded, 'yyyy.MM.dd hh:MM')}"></td>
           		<td th:if="${p.edited != null}" th:text="${#dates.format(p.edited, 'yyyy.MMM.dd hh:MM')}"></td>
           		<td th:unless="${p.edited != null}" th:text="soha"></td>
+          		<td th:text="${p.hidden}"></td>
           		<td>
           			<a th:href="@{'/dashboard/posts/edit/' + ${p.slug}}"><img th:src="@{/image/icons/edit.png}" alt="Szerkeszt"/></a>
-          			<a th:href="@{'/dashboard/posts/hide/' + ${p.slug}}"><img th:src="@{/image/icons/hide.png}" alt="Elrejt"/></a>
+          			<form th:action="@{'/dashboard/posts/hide/' + ${p.slug}}" method="post" class="form-inline" style="display: inline;">
+          				<input type="image" th:src="@{/image/icons/hide.png}" alt="Elrejt"></input>
+          			</form>
           		</td>
           	</tr>
           </table>
