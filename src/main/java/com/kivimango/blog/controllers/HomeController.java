@@ -3,6 +3,7 @@ package com.kivimango.blog.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,10 +30,10 @@ public class HomeController {
 	private static final String HOME_PAGE = "home";
 	
 	@GetMapping("/")
-	public String homePage(Model model, @PageableDefault(value = 5, page = 0) Pageable pageable) {
+	public String homePage(Model model, @PageableDefault(value=5, page=0, sort="uploaded", direction=Direction.DESC) Pageable pageable) {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
-		model.addAttribute("posts", posts.findAll(pageable));
+		model.addAttribute("posts", posts.findAllExcludeHidden(pageable));
 		return HOME_PAGE;
 	}
 	
@@ -43,8 +44,8 @@ public class HomeController {
 	 */
 	
 	@GetMapping("megtobb")
-	public String infiniteScrolling(Model model, @PageableDefault(value = 5, page = 0) Pageable pageable) {
-		model.addAttribute("posts", posts.findAll(pageable));
+	public String infiniteScrolling(Model model, @PageableDefault(value=5, page=0, sort="uploaded", direction=Direction.DESC) Pageable pageable) {
+		model.addAttribute("posts", posts.findAllExcludeHidden(pageable));
 		return "fragments/posts";
 	}
 	
