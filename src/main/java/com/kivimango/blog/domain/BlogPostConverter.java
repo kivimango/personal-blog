@@ -1,6 +1,7 @@
 package com.kivimango.blog.domain;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.kefirsf.bb.BBProcessorFactory;
 import org.kefirsf.bb.TextProcessor;
@@ -28,6 +29,23 @@ public class BlogPostConverter {
 	}
 	
 	/**
+	 * Converts a paginated BlogPost list into a paginated BlogPostView DTO
+	 * @param page
+	 * @param pageable
+	 * @return
+	 */
+	
+	public Page<BlogPostView> convert(Page<BlogPost> page, Pageable pageable) {
+		List<BlogPost> list = page.getContent();
+		List<BlogPostView> convertedList = new ArrayList<BlogPostView>(page.getSize());
+		int size = list.size();
+		for(int i = 0; i < size; i++) {
+			convertedList.add(convert(list.get(i)));
+		}
+		return new PageImpl<BlogPostView>(convertedList, pageable, page.getTotalElements());
+	}
+	
+	/**
 	 * Converts a BlogPost entity to a BlogPostView DTO.
 	 * The point is avoid leakage the database entities into 
 	 * the presentation layer due to security reasons.
@@ -45,30 +63,19 @@ public class BlogPostConverter {
 		converted.setUploaded(post.getUploaded());
 		converted.setEdited(post.getEdited());
 		converted.setHidden(post.isHidden());
-		
-		List<TagView> convertedTags = new ArrayList<TagView>(0);
-		for(Tag t : post.getTags()) {
-			convertedTags.add(new TagView(t.getTag()));
-		}
-		converted.setTags(convertedTags);
+		converted.setTags(convertTags(post.getTags()));
 		return converted;
 	}
-	
-	/**
-	 * Converts a paginated BlogPost list into a paginated BlogPostView DTO
-	 * @param page
-	 * @param pageable
-	 * @return
-	 */
-	
-	public Page<BlogPostView> convert(Page<BlogPost> page, Pageable pageable) {
-		List<BlogPost> list = page.getContent();
-		List<BlogPostView> convertedList = new ArrayList<BlogPostView>(page.getSize());
-		int size = list.size();
-		for(int i = 0; i < size; i++) {
-			convertedList.add(convert(list.get(i)));
+
+	private List<TagView> convertTags(final List<Tag> tags) {
+		int count = tags.size();
+		List<TagView> convertedTags = new ArrayList<TagView>(0);
+		if(count > 0) {
+			for(int i = 0; i < count; i++) {
+				convertedTags.add(new TagView(tags.get(i).getTag()));
+			}
 		}
-		return new PageImpl<BlogPostView>(convertedList, pageable, page.getTotalElements());
+		return Collections.unmodifiableList(convertedTags);
 	}
 
 }
