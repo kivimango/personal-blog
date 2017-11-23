@@ -64,19 +64,20 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	@Override
-	public void save(BlogPostForm form, AdminDetail author) {
+	public BlogPostView save(BlogPostForm form, AdminDetail author) {
 		BlogPost newPost = new BlogPost();
 		newPost.setTitle(form.getTitle());
 		newPost.setSlug(makeSlugFrom(form.getTitle()));
-		newPost.setAuthor(admins.findByUsername("Hicks"));
+		newPost.setAuthor(admins.findByUsername(author.getUsername()));
 		newPost.setContent(form.getContent());
 		newPost.setUploaded(new Date());
 		newPost.setTags(makeTagsFromInputField(form.getTags(), newPost));
 		postRepository.save(newPost);
+		return converter.convert(newPost);
 	}
 	
 	@Override
-	public void edit(String slug, BlogPostForm form) throws BlogPostNotFoundException {
+	public BlogPostView edit(String slug, BlogPostForm form) throws BlogPostNotFoundException {
 		BlogPost edited = postRepository.getPostBySlug(slug);
 		if(edited == null) throw new BlogPostNotFoundException("The requested blog post not found !");
 		else {
@@ -88,13 +89,13 @@ public class BlogPostServiceImpl implements BlogPostService {
 			edited.setEdited(new Date());
 			edited.setTags(makeTagsFromInputField(form.getTags(), edited));
 			postRepository.save(edited);
+			return converter.convert(edited);
 		}
 	}
 
 	public String makeSlugFrom(String title) {
-		return Normalizer.normalize(title, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "").
-			toLowerCase().replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
-		    .replaceAll("[^\\p{Alnum}]+", "-");
+		return Normalizer.normalize(title, Form.NFD).replaceAll("\\p{InCombiningDiacriticalMarks}+", "")
+		.replaceAll("[^\\w-]+", " ").trim().toLowerCase().replaceAll("\\s", "-");
 	}
 	
 	private List<Tag> makeTagsFromInputField(String value, BlogPost post) {
@@ -135,13 +136,14 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	@Override
-	public void hideOrPublish(String slug) throws BlogPostNotFoundException {
+	public BlogPostView hideOrPublish(String slug) throws BlogPostNotFoundException {
 		BlogPost post = postRepository.getPostBySlug(slug);
 		if(post == null) throw new BlogPostNotFoundException("The requested blog post not found !");
 		else {
 			if(!post.isHidden()) hide(post); else publish(post);
 			postRepository.save(post);
 		}
+		return converter.convert(post);
 	}
 
 	private void hide(BlogPost post) {

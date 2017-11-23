@@ -42,19 +42,21 @@ public interface BlogPostService {
 	/**
 	 * Saves a new post to the database
 	 * @param form
+	 * @return 
 	 * @throws AuthorNotFoundException 
 	 */
 	
-	void save(BlogPostForm form, AdminDetail author);
+	BlogPostView save(BlogPostForm form, AdminDetail author);
 	
 	/**
 	 * Modifies an existing post in the database
 	 * @param slug
 	 * @param form
+	 * @return 
 	 * @throws BlogPostNotFoundException
 	 */
 	
-	void edit(String slug, BlogPostForm form) throws BlogPostNotFoundException;
+	BlogPostView edit(String slug, BlogPostForm form) throws BlogPostNotFoundException;
 	
 	/**
 	 * Makes an URL slice from the title.Posts can be reached by their slug, 
@@ -67,9 +69,10 @@ public interface BlogPostService {
 	/**
 	 * Hide a particular post if its published, or publishes again if its hidden identified by the given slug.
 	 * @param slug
+	 * @return 
 	 * @throws BlogPostNotFoundException 
 	 */
 	
-	void hideOrPublish(String slug) throws BlogPostNotFoundException;
+	BlogPostView hideOrPublish(String slug) throws BlogPostNotFoundException;
 
 }
