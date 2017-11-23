@@ -22,35 +22,24 @@ public class BlogPostViewTest {
 		String content = "sample content";
 		Date uploaded = new Date();
 		Date edited = new Date();
+		boolean hidden = false;
 		
-		AuthorView author = new AuthorView();
 		String authorName = "Sample Author";
-		String avatar = "http:/google.com/avatar.jpg";
+		String avatar= "http:/google.com/avatar.jpg";
 		String fbProfile = "http://facebook.com/sample.author";
 		String twitterProfile = "http://twitter.com/sample-author";
-		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+		String linkedinProfile = "http://www.linkedin.com/en/sample-author";	
 		
 		String testTag = "test-teg";
 		TagView tag = new TagView(testTag);
 		
 		// When
-		author.setName(authorName);
-		author.setAvatar(avatar);
-		author.setFbProfile(fbProfile);
-		author.setTwitterProfile(twitterProfile);
-		author.setLinkedinProfile(linkedinProfile);
+		AuthorView author = new AuthorView(authorName, avatar, fbProfile, twitterProfile, linkedinProfile);
 		
 		List<TagView> tags = new ArrayList<TagView>();
 		tags.add(tag);
 		
-		BlogPostView post = new BlogPostView();
-		post.setTitle(title);
-		post.setSlug(slug);
-		post.setAuthor(author);
-		post.setContent(content);
-		post.setUploaded(uploaded);
-		post.setEdited(edited);
-		post.setTags(tags);
+		BlogPostView post = new BlogPostView(title, slug, author, content, uploaded, edited, tags, hidden);
 		
 		// Then
 		assertEquals(title, post.getTitle());
@@ -58,6 +47,7 @@ public class BlogPostViewTest {
 		assertEquals(content, post.getContent());
 		assertEquals(uploaded, post.getUploaded());
 		assertEquals(edited, post.getEdited());
+		assertEquals(hidden, post.isHidden());
 		
 		assertEquals(author, post.getAuthor());
 		assertEquals(true, post.getAuthor() instanceof AuthorView);

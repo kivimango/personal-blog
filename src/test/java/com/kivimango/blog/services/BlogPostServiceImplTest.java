@@ -1,133 +1,80 @@
 package com.kivimango.blog.services;
 
 import static org.junit.Assert.assertEquals;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import org.junit.Before;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.BDDMockito.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.AuthorView;
 import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.TagView;
-import com.kivimango.blog.domain.entity.Author;
 import com.kivimango.blog.domain.entity.BlogPost;
-import com.kivimango.blog.domain.entity.Tag;
+import com.kivimango.blog.domain.form.BlogPostForm;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
+import com.kivimango.blog.repositories.AdminRepository;
 import com.kivimango.blog.repositories.BlogPostRepository;
+import com.kivimango.blog.repositories.TagRepository;
+import com.kivimango.blog.samples.BlogPostFactory;
 
 /**
- * To check the Service class, we need to have an instance of Service class created and available as a 
- * @Bean so that we can @Autowire it in our test class. 
- * This configuration is achieved by using the @TestConfiguration annotation.
- * During component scanning, we might find components or configurations created only for specific 
- * tests accidentally get picked up everywhere. To help prevent that, Spring Boot provides 
- * @TestConfiguration annotation that can be used on classes in src/test/java to indicate that they should 
- * not be picked up by scanning.
- * 
- * Another interesting thing here is the use of @MockBean. It creates a Mock for the BlogPostRepository 
- * which can be used to bypass the call to the actual BlogPostRepository
- * .
  * @author kivimango
  */
 
 @RunWith(SpringRunner.class)
-public class BlogPostServiceImplTest {
+public class BlogPostServiceImplTest extends BlogPostFactory {
 	
-	@TestConfiguration
-	static class BlogPostServiceImplTestConfiguation {
-		@Bean
-		public BlogPostService blogPostService() {
-			return new BlogPostServiceImpl();
+	@Mock
+	@Qualifier("blogPostRepository")
+	private BlogPostRepository repo;
+	
+	@Mock
+	@Qualifier("adminRepository")
+	private AdminRepository adminRepo;
+	
+	@Mock
+	@Qualifier("tagRepository")
+	private TagRepository tagRepo;
+	
+	@InjectMocks
+	private BlogPostServiceImpl service;
+	
+	private Pageable pageable = new PageRequest(0, 30);
+	
+	@Test
+	public void testFindAllExcludeHiddenShouldReturnPublishedPostsOnly() {
+		given(repo.findAllByHidden(pageable, false)).willReturn(getPublicPostsListwithPagination());
+		Page<BlogPostView> posts = service.findAllExcludeHidden(pageable);
+		for(BlogPostView p : posts) {
+			assertFalse(p.isHidden());
 		}
 	}
 	
-	@Autowired
-	BlogPostService service;
-	
-	@MockBean
-	BlogPostRepository repo;
-	
-	// Given
-	String slug2 = "non-existent-post";
-	
-	String authorName = "Sample Author";
-	String avatar = "http://google.com/avatar.jpg";
-	String fbProfile = "http://facebook.com/sample.author";
-	String twitterProfile = "http://twitter.com/sample-author";
-	String linkedinProfile = "http://www.linkedin.com/en/sample-author";
-	Author author;
-	
-	String testTag = "test-teg";
-	Tag tag = new Tag();
-	List<Tag> tags = new ArrayList<Tag>();
-	
-	String title = "Sample Title";
-	String slug = "sample-title";
-	String content = "sample content";
-	Date uploaded = new Date();
-	Date edited = new Date();
-	BlogPost post;
-	
-	Pageable pageable = new PageRequest(0, 30);
-	List<BlogPost> list;
-	Page<BlogPost> posts;
-	
-	@Before
-	public void setup() {
-		// When
-		author = new Author();
-		author.setName(authorName);
-		author.setAvatar(avatar);
-		author.setFbProfile(fbProfile);
-		author.setTwitterProfile(twitterProfile);
-		author.setLinkedinProfile(linkedinProfile);
-		
-		tag.setTag(testTag);
-		tags.add(tag);
-		
-		post = new BlogPost();
-		post.setTitle(title);
-		post.setSlug(slug);
-		post.setAuthor(author);
-		post.setContent(content);
-		post.setUploaded(uploaded);
-		post.setEdited(edited);
-		post.setTags(tags);
-		
-		list= new ArrayList<BlogPost>(1);
-		list.add(post);
-		posts = new PageImpl<BlogPost>(list);
-		
-		Mockito.when(repo.findAll(pageable)).thenReturn(posts);
-		Mockito.when(repo.getPostBySlug(slug)).thenReturn(post);
-		Mockito.when(repo.getPostBySlug(slug2)).thenReturn(null);
-	}
-	
 	@Test
-	public void testFindAllWithPagination() throws BlogPostNotFoundException {
+	public void testFindAllShouldReturnAllPostsWithPagination() throws BlogPostNotFoundException {
+		given(repo.findAll(pageable)).willReturn(getPublicPostsListwithPagination());
 		Page<BlogPostView> page = service.findAll(pageable);
 		
 		assertEquals(0, page.getNumber());
 		assertEquals(30, page.getSize());
-		assertEquals(1, page.getNumberOfElements());
+		assertEquals(3, page.getNumberOfElements());
 		assertEquals(title, page.getContent().get(0).getTitle());
 		assertEquals(slug, page.getContent().get(0).getSlug());
 		assertEquals(content, page.getContent().get(0).getContent());
 		assertEquals(uploaded, page.getContent().get(0).getUploaded());
 		assertEquals(edited, page.getContent().get(0).getEdited());
 		
-		assertEquals(true, page.getContent().get(0).getAuthor() instanceof AuthorView);
+		assertTrue(page.getContent().get(0).getAuthor() instanceof AuthorView);
 		assertEquals(authorName, page.getContent().get(0).getAuthor().getName());
 		assertEquals(avatar, page.getContent().get(0).getAuthor().getAvatar());
 		assertEquals(fbProfile, page.getContent().get(0).getAuthor().getFbProfile());
@@ -137,33 +84,131 @@ public class BlogPostServiceImplTest {
 	
 	@Test
 	public void testGetPostBySlugShouldReturnBlogPostView() throws BlogPostNotFoundException {
-		// Then
+		given(repo.getPostBySlug(slug)).willReturn(getSamplePostEntity());
 		BlogPostView postView = service.getPostBySlug(slug);
 		
-		assertEquals(true, postView != null);
-		assertEquals(true, postView instanceof BlogPostView);
+		assertTrue(postView != null);
+		assertTrue(postView instanceof BlogPostView);
 		assertEquals(title, postView.getTitle());
 		assertEquals(slug, postView.getSlug());
 		assertEquals(content, postView.getContent());
-		assertEquals(uploaded, postView.getUploaded());
-		assertEquals(edited, postView.getEdited());
 		
-		assertEquals(true, postView.getTags().get(0) instanceof TagView);
-		assertEquals(testTag, postView.getTags().get(0).getTag());
-		assertEquals(1, postView.getTags().size());
-		
-		assertEquals(true, postView.getAuthor() instanceof AuthorView);
+		assertTrue(postView.getAuthor() instanceof AuthorView);
 		assertEquals(authorName, postView.getAuthor().getName());
 		assertEquals(avatar, postView.getAuthor().getAvatar());
 		assertEquals(fbProfile, postView.getAuthor().getFbProfile());
 		assertEquals(twitterProfile, postView.getAuthor().getTwitterProfile());
 		assertEquals(linkedinProfile, postView.getAuthor().getLinkedinProfile());
+		
+		assertEquals(uploaded, postView.getUploaded());
+		assertEquals(edited, postView.getEdited());
+		
+		assertTrue(postView.getTags().get(0) instanceof TagView);
+		assertEquals(testTag, postView.getTags().get(0).getTag());
+		assertEquals(1, postView.getTags().size());
 	}
 	
 	@Test(expected=BlogPostNotFoundException.class)
-	public void testBlogPostNotFoundShouldThrowException() throws BlogPostNotFoundException {
+	public void testGetPostBySlugShouldThrowException() throws BlogPostNotFoundException {
+		String nonExistingPostSlug = "non-existent-post";
+		Mockito.when(repo.getPostBySlug(nonExistingPostSlug)).thenReturn(null);
 		@SuppressWarnings("unused")
-		BlogPostView post = service.getPostBySlug(slug2);
+		BlogPostView nonExistingPost = service.getPostBySlug(nonExistingPostSlug);
 	}
 	
+	@Test(expected=BlogPostNotFoundException.class)
+	public void testgetPostBySlugNullParamaterShouldThrowException() throws BlogPostNotFoundException {
+		when(repo.getPostBySlug(null)).thenReturn(null);
+		@SuppressWarnings("unused")
+		BlogPostView post = service.getPostBySlug(null);
+	}
+	
+	@Test
+	public void testSave() {
+		BlogPostForm form = new BlogPostForm();
+		String title = "A sample title";
+		String content = "content with [b]bbcode[/b] [i]formatting[/i]";
+		String tags = "#tag,#test";
+		form.setTitle(title);
+		form.setContent(content);
+		form.setTags(tags);
+		AdminDetail currentAdmin = new AdminDetail(getSampleAdminEntity());
+		
+		given(adminRepo.findByUsername(currentAdmin.getUsername())).willReturn(getSampleAdminEntity());
+		
+		BlogPostView result = service.save(form, currentAdmin);
+		
+		assertEquals("a-sample-title", result.getSlug());
+		assertEquals("content with <b>bbcode</b> <i>formatting</i>", result.getContent());
+		assertEquals("#tag", result.getTags().get(0).toString());
+		assertEquals("#test", result.getTags().get(1).toString());
+	}
+	
+	@Test
+	public void testEdit() throws BlogPostNotFoundException {
+		BlogPostForm form = new BlogPostForm();
+		String editedTitle = "An edited title";
+		String editedContent = "Edited content with [b]bbcode[/b] [i]formatting[/i]";
+		String expectedEditedContent = "Edited content with <b>bbcode</b> <i>formatting</i>";
+		String editedTags = "#tag,#test,#edited";
+		form.setTitle(editedTitle);
+		form.setContent(editedContent);
+		form.setTags(editedTags);
+		
+		given(repo.getPostBySlug(slug)).willReturn(getSamplePostEntity());
+		
+		BlogPostView editedPost = service.edit(slug, form);
+		
+		assertEquals(editedTitle, editedPost.getTitle());
+		assertEquals(expectedEditedContent, editedPost.getContent());
+		assertEquals("#edited", editedPost.getTags().get(2).toString());
+	}
+	
+	@Test
+	public void testMakeSlugFromshouldLowerCaseCapitalsReplaceWhiteSpacesWithDashesAndRemoveSpecialCharacters() {
+		String title = "An example Title";
+		String expected = "an-example-title";
+		String result = service.makeSlugFrom(title);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testMakeSlugFromshouldReplaceHungarianCharactersWithTheirNeighborhood() {
+		String hungarianTitle = "Árvíztűrő tükörfűrőgép";
+		String expected = "arvizturo-tukorfurogep";
+		String result = service.makeSlugFrom(hungarianTitle);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testMakeSlugFromshouldRemoveSpecialCharacters() {
+		String titleWithSpecialChars = "I am a man with a Plan !";
+		String expected = "i-am-a-man-with-a-plan";
+		String result = service.makeSlugFrom(titleWithSpecialChars);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testMakeSlugFromshouldTrim() {
+		String titleWithWhiteSpaceAtTheEnd = "I am a man with a Plan ";
+		String expected = "i-am-a-man-with-a-plan";
+		String result = service.makeSlugFrom(titleWithWhiteSpaceAtTheEnd);
+		assertEquals(expected, result);
+	}
+	
+	@Test
+	public void testHideOrPublishShouldHidePublishedPost() throws BlogPostNotFoundException {
+		given(repo.getPostBySlug(slug)).willReturn(getSamplePostEntity());
+		BlogPostView modifiedPost = service.hideOrPublish(slug);
+		assertTrue(modifiedPost.isHidden());
+	}
+	
+	@Test
+	public void testHideOrPublishShouldPublishHiddenPost() throws BlogPostNotFoundException {
+		BlogPost hiddenPost = getSamplePostEntity();
+		hiddenPost.setHidden(true);
+		given(repo.getPostBySlug(slug)).willReturn(hiddenPost);
+		BlogPostView modifiedPost = service.hideOrPublish(slug);
+		assertFalse(modifiedPost.isHidden());
+	}
 }

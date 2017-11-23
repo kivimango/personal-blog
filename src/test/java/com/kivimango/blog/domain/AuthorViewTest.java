@@ -21,12 +21,7 @@ public class AuthorViewTest {
 		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
 		
 		// When
-		AuthorView view = new AuthorView();
-		view.setName(name);
-		view.setAvatar(avatar);
-		view.setFbProfile(fbProfile);
-		view.setTwitterProfile(twitterProfile);
-		view.setLinkedinProfile(linkedinProfile);
+		AuthorView view = new AuthorView(name, avatar, fbProfile, twitterProfile, linkedinProfile);
 		
 		// Then
 		assertEquals(name, view.getName());

@@ -1,14 +1,10 @@
 package com.kivimango.blog.domain.entity;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.junit.Test;
-
-import com.kivimango.blog.domain.entity.Author;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
 
@@ -25,10 +21,11 @@ public class BlogPostTest {
 		// Given
 		String title = "Sample Title";
 		String slug = "sample-title";
-		Author author = new Author();
+		Admin author = new Admin();
 		String content = "sample content";
 		Date uploaded = new Date();
 		Date edited = new Date();
+		boolean hidden = false;
 		
 		Tag tag = new Tag();
 		tag.setId(23);
@@ -45,15 +42,18 @@ public class BlogPostTest {
 		post.setUploaded(uploaded);
 		post.setEdited(edited);
 		post.setTags(tags);
+		post.setHidden(hidden);
 		
 		// Then
 		assertEquals(title, post.getTitle());
 		assertEquals(slug, post.getSlug());
 		assertEquals(author, post.getAuthor());
-		assertEquals(true, post.getAuthor() instanceof Author);
+		assertEquals(true, post.getAuthor() instanceof Admin);
 		assertEquals(content, post.getContent());
 		assertEquals(uploaded, post.getUploaded());
 		assertEquals(edited, post.getEdited());
+		assertEquals(tags, post.getTags());
+		assertEquals(hidden, post.isHidden());
 	}
 
 }

@@ -28,4 +28,13 @@ public class LoginAttemptsTest {
 		assertEquals(ipAdress, loginAttempt.getIpAdress());
 		assertEquals(timestamp, loginAttempt.getAttemptDate());
 	}
+	
+	@Test
+	public void testDefaultConstructor() {
+		loginAttempt = new LoginAttempt();
+		loginAttempt.setId(id);
+		loginAttempt.setIpAdress(ipAdress);
+		loginAttempt.setAttemptDate(timestamp);
+		testLoginAttemptEntityShouldEqual();
+	}
 }
