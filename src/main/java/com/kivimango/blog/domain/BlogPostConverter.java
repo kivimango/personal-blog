@@ -55,15 +55,8 @@ public class BlogPostConverter {
 	 */
 	
 	public BlogPostView convert(final BlogPost post) {
-		BlogPostView converted = new BlogPostView();
-		converted.setTitle(post.getTitle());
-		converted.setSlug(post.getSlug());
-		converted.setAuthor(authorConverter.convert(post.getAuthor()));
-		converted.setContent(bbCodeConverter.process(post.getContent()));
-		converted.setUploaded(post.getUploaded());
-		converted.setEdited(post.getEdited());
-		converted.setHidden(post.isHidden());
-		converted.setTags(convertTags(post.getTags()));
+		BlogPostView converted = new BlogPostView(post.getTitle(), post.getSlug(), authorConverter.convert(post.getAuthor()),
+				bbCodeConverter.process(post.getContent()), post.getUploaded(), post.getEdited(), convertTags(post.getTags()), post.isHidden());
 		return converted;
 	}
 
