@@ -17,86 +17,58 @@ import java.util.List;
 public class BlogPostView {
 	
 	private String title;
-	
 	private String slug;
-	
 	private AuthorView author;
-	
 	private String content;
-	
 	private Date uploaded;
-	
 	private Date edited;
-	
 	private List<TagView> tags = new ArrayList<TagView>(0);
-	
 	private boolean hidden;
+	
+	// TODO : consider using the Builder pattern
 
-	public BlogPostView() {	
+	public BlogPostView(String title, String slug, AuthorView author, String content, Date uploaded, Date edited,
+			List<TagView> tags, boolean hidden) {
+		this.title = title;
+		this.slug = slug;
+		this.author = author;
+		this.content = content;
+		this.uploaded = uploaded;
+		this.edited = edited;
+		this.tags = tags;
+		this.hidden = hidden;
 	}
 
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
 	public String getSlug() {
 		return slug;
-	}
-
-	public void setSlug(String slug) {
-		this.slug = slug;
 	}
 
 	public AuthorView getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(AuthorView author) {
-		this.author = author;
-	}
-
 	public String getContent() {
 		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
 	}
 
 	public Date getUploaded() {
 		return uploaded;
 	}
 
-	public void setUploaded(Date uploaded) {
-		this.uploaded = uploaded;
-	}
-
 	public Date getEdited() {
 		return edited;
-	}
-
-	public void setEdited(Date edited) {
-		this.edited = edited;
 	}
 
 	public List<TagView> getTags() {
 		return tags;
 	}
 
-	public void setTags(List<TagView> tags) {
-		this.tags = tags;
-	}
-
 	public boolean isHidden() {
 		return hidden;
-	}
-
-	public void setHidden(boolean hidden) {
-		this.hidden = hidden;
 	}
 	
 }
