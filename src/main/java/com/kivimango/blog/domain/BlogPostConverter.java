@@ -45,6 +45,14 @@ public class BlogPostConverter {
 		return new PageImpl<BlogPostView>(convertedList, pageable, page.getTotalElements());
 	}
 	
+	public List<BlogPostView> convert(final List<BlogPost> list) {
+		List<BlogPostView> converted = new ArrayList<BlogPostView>();
+		for(int i=0; i<list.size(); i++) {
+			converted.add(convert(list.get(i)));
+		}
+		return Collections.unmodifiableList(converted);
+	}
+	
 	/**
 	 * Converts a BlogPost entity to a BlogPostView DTO.
 	 * The point is avoid leakage the database entities into 
