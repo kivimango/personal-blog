@@ -11,13 +11,13 @@
 					<div class="card-body">
 						<h2 class="card-title"><a th:href="@{'/poszt/' + ${post.slug}}" th:text="${post.title}"></a></h2> <hr/>
 							<ul class="inline blogpost-header">
-								<li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <a th:href="@{'/szerzo/'+${post.author.name}}" th:text="${post.author.name}"></a></li>
+								<li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <b th:text="${post.author.name}"></b></li>
 								<li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
 							</ul>
 					</div>
-					<img class="card-img-top" src="http://placehold.it/750x300" th:alt="${post.title}"/>
+					<!--<img class="card-img-top" src="http://placehold.it/750x300" th:alt="${post.title}"/>-->
 					<div class="card-body">
-						<p class="card-text blogpost-excerpt" th:text="${post.content}"></p>
+						<p class="card-text blogpost-excerpt" th:utext="${post.content}"></p>
 					</div>
 				</div>
 				<a th:href="@{/megtobb/(page=${posts.number +1})}" class="jscroll-next btn btn-primary btn-block" role="button">Még több</a>
