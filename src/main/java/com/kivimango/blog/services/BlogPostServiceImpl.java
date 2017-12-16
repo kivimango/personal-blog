@@ -153,5 +153,11 @@ public class BlogPostServiceImpl implements BlogPostService {
 	private void publish(BlogPost post) {
 		post.setHidden(false);
 	}
+	
+	@Override
+	public List<BlogPostView> findPostsByTag(String t) {
+		Tag tagFromDb = tagRepository.findByTag(t);
+		return converter.convert(postRepository.findByTags(tagFromDb));
+	}
 
 }

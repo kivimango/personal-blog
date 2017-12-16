@@ -1,5 +1,7 @@
 package com.kivimango.blog.services;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.kivimango.blog.domain.AdminDetail;
@@ -74,5 +76,7 @@ public interface BlogPostService {
 	 */
 	
 	BlogPostView hideOrPublish(String slug) throws BlogPostNotFoundException;
+
+	List<BlogPostView> findPostsByTag(String tag);
 
 }
