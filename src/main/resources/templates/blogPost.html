@@ -11,8 +11,9 @@
 					<div class="card-body">
 						<h2 class="card-title" th:text="${post.title}"></h2> <hr/>
 						<ul class="inline blogpost-header">
-						  <li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <a th:href="@{'/szerzo/'+post.author.name}" th:text="${post.author.name}"></a></li>
-						  <li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
+						  <li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <img th:src="${post.author.avatar}" width="32" height="32" th:alt="${post.author.name}" class="rounded"></img></li>
+						  <li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i> </li>
+						  <li class="list-inline-item"><span class="glyphicon glyphicon-tags"></span></li>
 						  <li th:each="t : ${post.tags}" class="list-inline-item ">
 							<a th:href="@{'/cimke/'+${t.tag}}" th:text="'#'+${t.tag}"></a>
 						  </li>
@@ -34,7 +35,7 @@
          <div class="card my-4">
            <h5 class="card-header">Szerző</h5>
            <div class="card-body text-center">
-           	<img th:src="${post.author.avatar}" class="img-responsive"/>
+           	<img th:src="${post.author.avatar}" class="img-responsive rounded"/>
            	<br/><br/>
            	<ul class="inline">
            		<li class="list-inline-item"><a th:if="${post.author.fbProfile != null}" th:href="${post.author.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
