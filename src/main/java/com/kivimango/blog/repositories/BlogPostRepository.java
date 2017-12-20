@@ -20,5 +20,8 @@ public interface BlogPostRepository extends PagingAndSortingRepository<BlogPost,
 	Page<BlogPost> findAllByHidden(Pageable pageable, Boolean status);
 	BlogPost getPostBySlug(String slug);
 	List<BlogPost> findByTags(Tag tag);
-
+	//List<BlogPost> findByTitleOrSlugOrContentOrTags(String query, String query2, String query3, List<Tag> tags);
+	List<BlogPost> findByTitleIgnoreCaseContaining(String searchedTitle);
+	List<BlogPost> findBySlugIgnoreCaseContaining(String searchedSlug);
+	List<BlogPost> findByContentIgnoreCaseContaining(String searchedContent);
 }

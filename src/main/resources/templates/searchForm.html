@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:include="fragments/header :: head">
+</head>
+<body>
+	<nav th:include="fragments/navbar :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="offset-3 col-lg-6">
+				<form th:action="@{/keres}" method="post">
+					<div class="input-group">
+						<input type="text" placeholder="Keresés" name="q" pattern=".{3,}" required="required" autofocus="autofocus" class="form-control"/>
+						<span class="input-group-btn">
+						<input type="submit" class="btn btn-default" value="Keress !"/>
+						</span>
+					</div>
+			</form>
+			</div>
+		</div>
+	</div>
+	<footer th:include="fragments/footer :: footer"></footer>
+</body>
+</html>
