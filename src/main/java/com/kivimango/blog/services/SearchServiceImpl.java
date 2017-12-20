@@ -69,7 +69,6 @@ public class SearchServiceImpl implements SearchService {
 	private String focusOnKeyword(String content, String query) {
 		int spacer = 5;
 		int start = content.indexOf(query);
-		System.out.println("start: " + start);
 		if(start != -1 && content.length() > (spacer + query.length())) {
 			return "..." + content.substring(start, start + query.length() + spacer) + "...";
 		}
