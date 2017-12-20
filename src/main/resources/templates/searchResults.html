@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head th:include="fragments/header :: head">
+</head>
+<body>
+	<nav th:include="fragments/navbar :: nav"></nav>
+	<div class="container">
+		<div class="row">
+			<div class="offset-3 col-lg-6">
+				<form th:action="@{/keres}" method="post">
+					<div class="input-group">
+						<input type="text" placeholder="Keresés" id="q" name="q" th:value="${query}" pattern=".{3,}" required="required" autofocus="autofocus" class="form-control"/>
+						<span class="input-group-btn">
+						<input type="submit" class="btn btn-default" value="Keress !"/>
+						</span>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="context">
+		<div th:if="${results != null || results.size() > 1}" th:each="post : ${results}" class="blogpost-box">
+			<div class="card-body">
+				<h2 class="card-title"><a th:href="@{'/poszt/' + ${post.slug}}" th:text="${post.title}"></a></h2> <hr/>
+					<ul class="inline blogpost-header">
+						<li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <b th:text="${post.author.name}"></b></li>
+						<li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
+					</ul>
+			</div>
+			<div class="card-body">
+				<p class="card-text blogpost-excerpt" th:utext="${post.content}"></p>
+			</div>
+		</div>
+		</div>
+		<div th:if="${results.size() eq 0}">
+			<div class="col-lg-12 text-center" style="margin-top:15px;font-style:italic;">
+				<h2>Nincs találat a keresett kifejezésre</h2>
+			</div>
+		</div>
+	</div>
+	<footer th:include="fragments/footer :: footer"></footer>
+	<script type="text/javascript" th:src="@{js/plugins/mark.min.js}" charset="UTF-8"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			var marker = new Mark(document.querySelector(".context"));
+			var keyword = document.getElementById("q").value;
+			//alert(keyword);
+			marker.mark(keyword);
+		});
+	</script>
+</body>
+</html>
