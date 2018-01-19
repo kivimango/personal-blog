@@ -14,5 +14,6 @@ import com.kivimango.blog.domain.entity.Admin;
 public interface AdminRepository extends JpaRepository<Admin, Short> {
 	
 	Admin findByUsername(String username);
+	Admin findFirstByOrderById();
 
 }

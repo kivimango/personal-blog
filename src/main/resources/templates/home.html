@@ -25,7 +25,29 @@
        
        <!-- Sidebar Widgets Column -->
        <div class="col-md-4">
-       
+       	<div class="card my-4">
+       		<h5 class="card-header">Üdvözöllek</h5>
+       		<div class="card-body text-center">
+       			<img th:if="${author != null}" th:src="${author.avatar}" class="img-responsive rounded"/>
+       			<br/><br/>
+       			<ul class="inline">
+           			<li class="list-inline-item"><a th:if="${author.fbProfile != null}" th:href="${author.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
+           			<li class="list-inline-item"><a th:if="${author.twitterProfile != null}" th:href="${author.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
+           			<li class="list-inline-item"><a th:if="${author.linkedinProfile != null}" th:href="${author.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
+           		</ul>
+       			<p th:text="${bio}"></p>
+       		</div>
+       	</div>
+       	<div class="card my-4">
+       		<h5 class="card-header">Címkék</h5>
+       		<div class="card-body">
+       			<div class="row">
+       				<div class="col-lg-12">
+       				<a th:each="t : ${tags}" th:href="@{'/cimke/' + ${t.tag}}" th:text="'#'+${t.tag}"></a>
+       				</div>
+       			</div>
+       		</div>
+       	</div>
        </div>
 
      </div>
