@@ -30,27 +30,23 @@ public class BlogPostController {
 	
 	private static final String DETAIL_PAGE = "blogPost";
 	
-	private BlogPostService service;
-	
+	private BlogPostService posts;
 	private TagService tags;
 	
+	@Autowired
+	public BlogPostController(BlogPostService service, TagService tags) {
+		this.posts = service;
+		this.tags = tags;
+	}
+
 	@GetMapping("poszt/{slug}")
 	public String readBlogPost(@PathVariable(name="slug") String slug, Model model) throws BlogPostNotFoundException {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
-		model.addAttribute("post", service.getPostBySlug(slug));
+		model.addAttribute("post", posts.getPostBySlug(slug));
+		model.addAttribute("recentPosts", posts.findRecentPosts());
 		model.addAttribute("tags", tags.getFirstTenTags());
 		return DETAIL_PAGE;
-	}
-	
-	@Autowired
-	public void setService(BlogPostService service) {
-		this.service = service;
-	}
-	
-	@Autowired
-	public void setTagService(TagService service) {
-		this.tags = service;
 	}
 
 }

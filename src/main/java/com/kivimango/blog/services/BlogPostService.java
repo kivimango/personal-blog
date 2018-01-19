@@ -1,7 +1,6 @@
 package com.kivimango.blog.services;
 
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import com.kivimango.blog.domain.AdminDetail;
@@ -32,6 +31,12 @@ public interface BlogPostService {
 	 */
 	
 	Page<BlogPostView> findAll(Pageable pageable);
+	
+	/**
+	 * Finding the last 5 blogpost in the database.
+	 */
+	
+	List<BlogPostView> findRecentPosts();
 	
 	 /**
 	 * Finding one particular post in the database by the given slug.

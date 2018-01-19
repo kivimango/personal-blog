@@ -56,6 +56,12 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	@Override
+	public List<BlogPostView> findRecentPosts() {
+		List<BlogPost> recentPosts = postRepository.findFirst5ByOrderByUploaded();
+		return converter.convert(recentPosts);
+	}
+	
+	@Override
 	public BlogPostView getPostBySlug(String slug) throws BlogPostNotFoundException {
 		BlogPost post = postRepository.getPostBySlug(slug);
 		if(post == null || post.isHidden()) {
