@@ -43,9 +43,8 @@ public class SearchServiceImpl implements SearchService {
 		// TODO: add search by tags
 		// TODO: merge the 3 search method into one excluding duplicates and hidden posts
 		
-		List<BlogPostView> convertedResult = converter.convert(result);
 		focusContent(query, result);
-		return convertedResult;
+		return converter.convert(result);
 	}
 	
 	/**
@@ -62,7 +61,8 @@ public class SearchServiceImpl implements SearchService {
 		for(int i=0; i<result.size(); i++) {
 			String originalContent = result.get(i).getContent();
 			String focusedcontent = focusOnKeyword(originalContent, query);
-			result.get(i).setContent(focusedcontent);
+			BlogPost bp = result.get(i);
+			result.set(i, bp);
 		}
 	}
 	
