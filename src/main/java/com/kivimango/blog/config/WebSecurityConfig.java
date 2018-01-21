@@ -1,5 +1,7 @@
 package com.kivimango.blog.config;
 
+import java.util.HashSet;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +11,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import com.kivimango.blog.domain.AdminDetail;
+import com.kivimango.blog.domain.entity.Admin;
 
 /**
  * @author kivimango
@@ -36,9 +43,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// Don't change the strength parameter in the encoder's constructor, otherwise it will break the login
-		auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder(12));
-		// adding a default admin - values comes from the cmdline parameters
-		auth.inMemoryAuthentication().withUser(root).password(pw).authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		auth.userDetailsService(service).passwordEncoder(new BCryptPasswordEncoder(12))
+		.and().userDetailsService(new UserDetailsService() {	
+			@Override
+			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+				Set<GrantedAuthority> auths = new HashSet<>();
+				auths.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+				Admin adm = new Admin();
+				adm.setAvatar("/image/user.jpg");
+				adm.setName(root);
+				adm.setUsername(root);
+				adm.setPassword(pw);
+				AdminDetail rot = new AdminDetail(adm);
+				return rot;
+			}
+		});
 	}
 
 	@Profile("dev")
