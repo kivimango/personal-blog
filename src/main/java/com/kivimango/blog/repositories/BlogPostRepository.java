@@ -24,5 +24,5 @@ public interface BlogPostRepository extends PagingAndSortingRepository<BlogPost,
 	List<BlogPost> findByTitleIgnoreCaseContaining(String searchedTitle);
 	List<BlogPost> findBySlugIgnoreCaseContaining(String searchedSlug);
 	List<BlogPost> findByContentIgnoreCaseContaining(String searchedContent);
-	List<BlogPost> findFirst5ByOrderByUploaded();
+	List<BlogPost> findFirst5ByOrderByUploadedDesc();
 }

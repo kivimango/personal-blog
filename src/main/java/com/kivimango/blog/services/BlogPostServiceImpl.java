@@ -57,7 +57,7 @@ public class BlogPostServiceImpl implements BlogPostService {
 	
 	@Override
 	public List<BlogPostView> findRecentPosts() {
-		List<BlogPost> recentPosts = postRepository.findFirst5ByOrderByUploaded();
+		List<BlogPost> recentPosts = postRepository.findFirst5ByOrderByUploadedDesc();
 		return converter.convert(recentPosts);
 	}
 	
