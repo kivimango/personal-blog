@@ -3,6 +3,7 @@ package com.kivimango.blog.services;
 import java.util.List;
 import org.springframework.stereotype.Repository;
 import com.kivimango.blog.domain.AuthorView;
+import com.kivimango.blog.domain.form.AuthorAddForm;
 import com.kivimango.blog.domain.form.AuthorEditForm;
 import com.kivimango.blog.exception.UserNotFoundException;
 
@@ -27,5 +28,7 @@ public interface AdminService {
 	
 	AuthorView findByName(String username) throws UserNotFoundException;
 	
-	void save(String name, AuthorEditForm form) throws UserNotFoundException;
+	void edit(String name, AuthorEditForm form) throws UserNotFoundException;
+	
+	void save(AuthorAddForm form);
 }
