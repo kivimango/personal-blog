@@ -9,7 +9,7 @@
 	<nav th:include="admin/fragments/menu :: nav"></nav>
 	
 	<div role="main" class="col-sm-9 ml-sm-auto col-md-10">
-		<h1>Posztok</h1>
+		<h1>Szerzők</h1>
 			<a th:href="@{/dashboard/authors/add}" class="btn btn-success pull-right">Új szerző hozzáadása</a>
 			<br/>
 			<th:block th:if="${!#strings.isEmpty(flashMessage)}">
@@ -20,9 +20,9 @@
           	<tr th:each="a : ${authors}">
           		<td th:text="${a.name}"></td>
           		<td><img th:src="${a.avatar}" width="30" height="30" class="img-responsive thumbnail"/></td>
-          		<td><a th:if="${a.fbProfile != null}" th:href="${a.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></td>
-          		<td><a th:if="${a.twitterProfile != null}" th:href="${a.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></td>
-          		<td><a th:if="${a.linkedinProfile != null}" th:href="${a.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></td>
+          		<td><a th:if="${!#strings.isEmpty(a.fbProfile)}" th:href="${a.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></td>
+          		<td><a th:if="${!#strings.isEmpty(a.twitterProfile)}" th:href="${a.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></td>
+          		<td><a th:if="${!#strings.isEmpty(a.linkedinProfile)}" th:href="${a.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></td>
           		<td>
           			<a th:href="@{'/dashboard/authors/edit/' + ${a.name}}"><img th:src="@{/image/icons/edit.png}" alt="Szerkeszt"/></a>
           		</td>
