@@ -15,6 +15,14 @@ public class AdminDetail implements UserDetails {
 	public AdminDetail(Admin admin) {
 		this.admin = admin;
 	}
+	
+	public String getName() {
+		return admin.getName();
+	}
+	
+	public String getAvatar() {
+		return admin.getAvatar();
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
