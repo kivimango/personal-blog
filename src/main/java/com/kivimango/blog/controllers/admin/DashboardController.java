@@ -52,6 +52,8 @@ public class DashboardController {
 	@GetMapping("/dashboard")
 	private String mainPage(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
 		model.addAttribute("title", title);
+		model.addAttribute("name", currentAdmin.getUsername());
+		model.addAttribute("avatar", currentAdmin.getAvatar());
 		return MAIN_PAGE;
 	}
 	
@@ -62,14 +64,16 @@ public class DashboardController {
 			model.addAttribute("flashMessage", flashMessage);
 		}
 		model.addAttribute("posts", blogposts.findAll(pageable));
-		model.addAttribute("admin", currentAdmin);
+		model.addAttribute("name", currentAdmin.getUsername());
+		model.addAttribute("avatar", currentAdmin.getAvatar());
 		model.addAttribute("title", title);
 		return POSTS_LIST;
 	}
 	
 	@GetMapping("/dashboard/posts/compose")
 	public String newPostForm(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
-		model.addAttribute("admin", currentAdmin);
+		model.addAttribute("name", currentAdmin.getUsername());
+		model.addAttribute("avatar", currentAdmin.getAvatar());
 		model.addAttribute("post", new BlogPostForm());
 		model.addAttribute("title", title);
 		return POST_COMPOSE_FORM;
@@ -78,7 +82,6 @@ public class DashboardController {
 	@PostMapping("/dashboard/posts/compose")
 	public String addPost(@Valid BlogPostForm form, BindingResult result, final RedirectAttributes redAttrs, Model model, 
 			@AuthenticationPrincipal AdminDetail currentAdmin) {
-		System.out.println(currentAdmin.getUsername());
 		if(result.hasErrors()) {
 			model.addAttribute("post", form);
 			return POST_COMPOSE_FORM;
@@ -90,7 +93,8 @@ public class DashboardController {
 	
 	@GetMapping("/dashboard/posts/edit/{slug}")
 	public String editPostForm(@PathVariable String slug, Model model, @AuthenticationPrincipal AdminDetail currentAdmin) throws BlogPostNotFoundException {
-		model.addAttribute("admin", currentAdmin);
+		model.addAttribute("name", currentAdmin.getUsername());
+		model.addAttribute("avatar", currentAdmin.getAvatar());
 		model.addAttribute("post", blogposts.getPostBySlug(slug));
 		model.addAttribute("title", title);
 		return POST_EDIT_FORM;
