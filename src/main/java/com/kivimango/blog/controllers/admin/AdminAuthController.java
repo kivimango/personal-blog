@@ -2,7 +2,9 @@ package com.kivimango.blog.controllers.admin;
 
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.kivimango.blog.services.AntiBruteforceService;
 
@@ -17,9 +19,16 @@ public class AdminAuthController {
 	
 	private static final String LOGIN_PAGE = "admin/login";
 	
-	@Autowired
 	private AntiBruteforceService loginService;
 	
+	@Value("${blog.title}")
+	private String title;
+	
+	@Autowired
+	public AdminAuthController(AntiBruteforceService loginService) {
+		this.loginService = loginService;
+	}
+
 	/**
 	 * Displaying a login form to the unauthenticated user.
 	 * If there is an incoming brute-force attack from a particular IP address,
@@ -30,7 +39,8 @@ public class AdminAuthController {
 	 */
 	
 	@GetMapping("/dashboard/login")
-	public String loginPage(HttpServletRequest request) {
+	public String loginPage(Model model,HttpServletRequest request) {
+		model.addAttribute("title", title);
 		if(loginService.isBlocked(request.getRemoteAddr())) {
 			return "/error/banned";
 		}

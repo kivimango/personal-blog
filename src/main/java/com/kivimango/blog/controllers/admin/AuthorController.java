@@ -1,6 +1,7 @@
 package com.kivimango.blog.controllers.admin;
 
 import javax.validation.Valid;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,9 @@ public class AuthorController {
 	private static final String AUTHOR_EDIT_FORM = "/admin/authorEdit";
 	private AdminService admins;
 	
+	@Value("${blog.title}")
+	private String title;
+	
 	public AuthorController(AdminService admins) {
 		this.admins = admins;
 	}
@@ -34,6 +38,7 @@ public class AuthorController {
 	@GetMapping("/dashboard/authors")
 	public String showAuthors(Model model) {
 		model.addAttribute("authors", admins.findAll());
+		model.addAttribute("title", title);
 		return "/admin/authorsList";
 	}
 	
@@ -47,6 +52,7 @@ public class AuthorController {
 		form.setTwitterProfile(admin.getTwitterProfile());
 		form.setLinkedinProfile(admin.getLinkedinProfile());
 		model.addAttribute("author", form);
+		model.addAttribute("title", title);
 		return AUTHOR_EDIT_FORM;
 	}
 	

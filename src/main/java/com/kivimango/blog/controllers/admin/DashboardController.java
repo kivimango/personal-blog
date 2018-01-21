@@ -2,6 +2,7 @@ package com.kivimango.blog.controllers.admin;
 
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
@@ -34,6 +35,9 @@ public class DashboardController {
 	
 	private BlogPostService blogposts;
 	
+	@Value("${blog.title}")
+	private String title;
+	
 	private static final String POSTS_LIST = "admin/postsList";
 	private static final String MAIN_PAGE = "admin/dashboard";
 	private static final String POST_COMPOSE_FORM = "admin/compose";
@@ -46,7 +50,8 @@ public class DashboardController {
 	}
 
 	@GetMapping("/dashboard")
-	private String mainPage(@AuthenticationPrincipal AdminDetail currentAdmin) {
+	private String mainPage(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
+		model.addAttribute("title", title);
 		return MAIN_PAGE;
 	}
 	
@@ -58,6 +63,7 @@ public class DashboardController {
 		}
 		model.addAttribute("posts", blogposts.findAll(pageable));
 		model.addAttribute("admin", currentAdmin);
+		model.addAttribute("title", title);
 		return POSTS_LIST;
 	}
 	
@@ -65,6 +71,7 @@ public class DashboardController {
 	public String newPostForm(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
 		model.addAttribute("admin", currentAdmin);
 		model.addAttribute("post", new BlogPostForm());
+		model.addAttribute("title", title);
 		return POST_COMPOSE_FORM;
 	}
 	
@@ -85,6 +92,7 @@ public class DashboardController {
 	public String editPostForm(@PathVariable String slug, Model model, @AuthenticationPrincipal AdminDetail currentAdmin) throws BlogPostNotFoundException {
 		model.addAttribute("admin", currentAdmin);
 		model.addAttribute("post", blogposts.getPostBySlug(slug));
+		model.addAttribute("title", title);
 		return POST_EDIT_FORM;
 	}
 	
