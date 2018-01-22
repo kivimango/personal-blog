@@ -61,6 +61,7 @@ public class AdminServiceImpl implements AdminService {
 		author.setFbProfile(form.getFbProfile());
 		author.setTwitterProfile(form.getTwitterProfile());
 		author.setLinkedinProfile(form.getLinkedinProfile());
+		author.setGithubProfile(form.getGithubProfile());
 		adminRepository.save(author);
 	}
 
@@ -73,6 +74,7 @@ public class AdminServiceImpl implements AdminService {
 		newAdmin.setFbProfile(form.getFbProfile());
 		newAdmin.setTwitterProfile(form.getTwitterProfile());
 		newAdmin.setLinkedinProfile(form.getLinkedinProfile());
+		newAdmin.setGithubProfile(form.getGithubProfile());
 		newAdmin.setPassword(hashPassword(form.getPassword()));
 		adminRepository.save(newAdmin);
 	}

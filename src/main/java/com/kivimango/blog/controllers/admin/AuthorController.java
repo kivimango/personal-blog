@@ -65,9 +65,10 @@ public class AuthorController {
 			AuthorEditForm form = new AuthorEditForm();
 			form.setName(admin.getName());
 			form.setAvatar(admin.getAvatar());
-			form.setFbProfile(admin.getFbProfile());
-			form.setTwitterProfile(admin.getTwitterProfile());
-			form.setLinkedinProfile(admin.getLinkedinProfile());
+			form.setFbProfile(admin.getFacebook());
+			form.setTwitterProfile(admin.getTwitter());
+			form.setLinkedinProfile(admin.getLinkedin());
+			form.setGithubProfile(admin.getGithub());
 			model.addAttribute("author", form);
 			model.addAttribute("title", title);
 		} else throw new AccessDeniedException("You are not allowed to edit someone else's profile!");

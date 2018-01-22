@@ -68,6 +68,17 @@
               				</div>
               				<small class="text-muted">LinkedIn profil elérési út (opcionális)</small>
               			</div>
+              			<div class="form-group">
+              				<div class="row">
+              					<div class="col-lg-1">
+              						<img th:src="@{/image/icons/github-icon.png}"/>
+              					</div>
+              					<div class="col-lg-11">
+              						<input type="text" name="githubProfile" maxlength="255" placeholder="https://www.github.com/" class="form-control" th:field="*{githubProfile}"/>
+              					</div>
+              				</div>
+              				<small class="text-muted">Github profil elérési út (opcionális)</small>
+              			</div>
 					</div>
 
 					<div class="col-lg-6">

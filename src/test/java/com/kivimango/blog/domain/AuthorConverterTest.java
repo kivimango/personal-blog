@@ -23,6 +23,7 @@ public class AuthorConverterTest {
 		String fbProfile = "http://facebook.com/author";
 		String twitterProfile = "http://twitter.com/sample-author";
 		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+		String githubProfile = "http://www.github.com/";
 		
 		Admin sample = new Admin();
 		sample.setId(id);
@@ -31,6 +32,7 @@ public class AuthorConverterTest {
 		sample.setFbProfile(fbProfile);
 		sample.setLinkedinProfile(linkedinProfile);
 		sample.setTwitterProfile(twitterProfile);
+		sample.setGithubProfile(githubProfile);
 		
 		// When
 		AuthorView view = converter.convert(sample);
@@ -38,9 +40,9 @@ public class AuthorConverterTest {
 		// Then
 		assertEquals(name, view.getName());
 		assertEquals(avatar, view.getAvatar());
-		assertEquals(fbProfile, view.getFbProfile());
-		assertEquals(twitterProfile, view.getTwitterProfile());
-		assertEquals(linkedinProfile, view.getLinkedinProfile());
+		assertEquals(fbProfile, view.getFacebook());
+		assertEquals(twitterProfile, view.getTwitter());
+		assertEquals(linkedinProfile, view.getLinkedin());
 	}
 
 }

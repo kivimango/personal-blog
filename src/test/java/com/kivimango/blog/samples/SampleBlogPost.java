@@ -19,6 +19,7 @@ public class SampleBlogPost {
 		String fbProfile = "http://facebook.com/author";
 		String twitterProfile = "http://twitter.com/sample-author";
 		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+		String githubProfile = "http://www.github.com/";
 		
 		Admin author = new Admin();
 		author.setId(id);
@@ -27,6 +28,7 @@ public class SampleBlogPost {
 		author.setFbProfile(fbProfile);
 		author.setLinkedinProfile(linkedinProfile);
 		author.setTwitterProfile(twitterProfile);
+		author.setGithubProfile(githubProfile);
 		
 		BlogPost post = new BlogPost();
 		String title = "Sample Title";

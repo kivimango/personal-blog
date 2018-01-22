@@ -8,7 +8,7 @@ public class AuthorConverter {
 	
 	public AuthorView convert(final Admin author) {
 		return new AuthorView(author.getName(), author.getAvatar(),
-				author.getFbProfile(), author.getTwitterProfile(), author.getLinkedinProfile());
+				author.getFbProfile(), author.getTwitterProfile(), author.getLinkedinProfile(), author.getGithubProfile());
 	}
 	
 	public List<AuthorView> convert(final List<Admin> authors) {

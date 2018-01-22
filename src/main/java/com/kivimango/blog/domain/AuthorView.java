@@ -13,21 +13,19 @@ package com.kivimango.blog.domain;
 public class AuthorView {
 	
 	private String name;
-
 	private String avatar;
-	
-	private String fbProfile;
-	
-	private String twitterProfile;
-	
-	private String linkedinProfile;
+	private String facebook;
+	private String twitter;
+	private String linkedin;
+	private String github;
 
-	public AuthorView(String name, String avatar, String fbProfile, String twitterProfile, String linkedinProfile) {
+	public AuthorView(String name, String avatar, String fbProfile, String twitterProfile, String linkedinProfile, String githubProfile) {
 		this.name = name;
 		this.avatar = avatar;
-		this.fbProfile = fbProfile;
-		this.twitterProfile = twitterProfile;
-		this.linkedinProfile = linkedinProfile;
+		this.facebook = fbProfile;
+		this.twitter = twitterProfile;
+		this.linkedin = linkedinProfile;
+		this.github = githubProfile;
 	}
 
 	public String getName() {
@@ -37,17 +35,37 @@ public class AuthorView {
 	public String getAvatar() {
 		return avatar;
 	}
-
-	public String getFbProfile() {
-		return fbProfile;
+	
+	public String getFacebook() {
+		return facebook;
 	}
 
-	public String getTwitterProfile() {
-		return twitterProfile;
+	public void setFacebook(String facebook) {
+		this.facebook = facebook;
 	}
 
-	public String getLinkedinProfile() {
-		return linkedinProfile;
+	public String getTwitter() {
+		return twitter;
+	}
+
+	public void setTwitter(String twitter) {
+		this.twitter = twitter;
+	}
+
+	public String getLinkedin() {
+		return linkedin;
+	}
+
+	public void setLinkedin(String linkedin) {
+		this.linkedin = linkedin;
+	}
+
+	public String getGithub() {
+		return github;
+	}
+
+	public void setGithub(String github) {
+		this.github = github;
 	}
 
 }

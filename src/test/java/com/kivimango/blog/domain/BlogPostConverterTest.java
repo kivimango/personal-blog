@@ -35,9 +35,11 @@ public class BlogPostConverterTest extends SampleBlogPost {
 		assertEquals(true, convertedPost.getAuthor() instanceof AuthorView);
 		assertEquals(post.getAuthor().getName(), convertedPost.getAuthor().getName());
 		assertEquals(post.getAuthor().getAvatar(), convertedPost.getAuthor().getAvatar());
-		assertEquals(post.getAuthor().getFbProfile(), convertedPost.getAuthor().getFbProfile());
-		assertEquals(post.getAuthor().getTwitterProfile(), convertedPost.getAuthor().getTwitterProfile());
-		assertEquals(post.getAuthor().getLinkedinProfile(), convertedPost.getAuthor().getLinkedinProfile());
+		assertEquals(post.getAuthor().getFbProfile(), convertedPost.getAuthor().getFacebook());
+		assertEquals(post.getAuthor().getTwitterProfile(), convertedPost.getAuthor().getTwitter());
+		assertEquals(post.getAuthor().getLinkedinProfile(), convertedPost.getAuthor().getLinkedin());
+		assertEquals(post.getAuthor().getGithubProfile(), convertedPost.getAuthor().getGithub());
+		
 		
 		assertEquals(true, convertedPost.getTags().get(0) instanceof TagView);
 		assertEquals(1, convertedPost.getTags().size());

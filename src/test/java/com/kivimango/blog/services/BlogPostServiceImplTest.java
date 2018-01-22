@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
-
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.AuthorView;
 import com.kivimango.blog.domain.BlogPostView;
@@ -77,9 +76,10 @@ public class BlogPostServiceImplTest extends BlogPostFactory {
 		assertTrue(page.getContent().get(0).getAuthor() instanceof AuthorView);
 		assertEquals(authorName, page.getContent().get(0).getAuthor().getName());
 		assertEquals(avatar, page.getContent().get(0).getAuthor().getAvatar());
-		assertEquals(fbProfile, page.getContent().get(0).getAuthor().getFbProfile());
-		assertEquals(twitterProfile, page.getContent().get(0).getAuthor().getTwitterProfile());
-		assertEquals(linkedinProfile, page.getContent().get(0).getAuthor().getLinkedinProfile());
+		assertEquals(fbProfile, page.getContent().get(0).getAuthor().getFacebook());
+		assertEquals(twitterProfile, page.getContent().get(0).getAuthor().getTwitter());
+		assertEquals(linkedinProfile, page.getContent().get(0).getAuthor().getLinkedin());
+		assertEquals(githubProfile, page.getContent().get(0).getAuthor().getGithub());
 	}
 	
 	@Test
@@ -96,9 +96,10 @@ public class BlogPostServiceImplTest extends BlogPostFactory {
 		assertTrue(postView.getAuthor() instanceof AuthorView);
 		assertEquals(authorName, postView.getAuthor().getName());
 		assertEquals(avatar, postView.getAuthor().getAvatar());
-		assertEquals(fbProfile, postView.getAuthor().getFbProfile());
-		assertEquals(twitterProfile, postView.getAuthor().getTwitterProfile());
-		assertEquals(linkedinProfile, postView.getAuthor().getLinkedinProfile());
+		assertEquals(fbProfile, postView.getAuthor().getFacebook());
+		assertEquals(twitterProfile, postView.getAuthor().getTwitter());
+		assertEquals(linkedinProfile, postView.getAuthor().getLinkedin());
+		assertEquals(githubProfile, postView.getAuthor().getGithub());
 		
 		assertEquals(uploaded, postView.getUploaded());
 		assertEquals(edited, postView.getEdited());

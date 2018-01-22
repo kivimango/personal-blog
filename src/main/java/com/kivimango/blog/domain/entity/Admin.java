@@ -43,6 +43,9 @@ public class Admin {
 	
 	@Column(length=255)
 	private String linkedinProfile;
+	
+	@Column(length=255)
+	private String githubProfile;
 
 	public Short getId() {
 		return id;
@@ -122,6 +125,14 @@ public class Admin {
 
 	public void setLinkedinProfile(String linkedinProfile) {
 		this.linkedinProfile = linkedinProfile;
+	}
+	
+	public String getGithubProfile() {
+		return githubProfile;
+	}
+
+	public void setGithubProfile(String githubProfile) {
+		this.githubProfile = githubProfile;
 	}
 
 }

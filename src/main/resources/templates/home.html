@@ -31,9 +31,10 @@
        			<img th:if="${author != null}" th:src="${author.avatar}" class="img-responsive rounded"/>
        			<br/><br/>
        			<ul class="inline">
-           			<li class="list-inline-item"><a th:if="${author.fbProfile != null}" th:href="${author.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
-           			<li class="list-inline-item"><a th:if="${author.twitterProfile != null}" th:href="${author.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
-           			<li class="list-inline-item"><a th:if="${author.linkedinProfile != null}" th:href="${author.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
+           			<li th:if="${!#strings.isEmpty(author.facebook)}" class="list-inline-item"><a th:href="${author.facebook}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
+           			<li th:if="${!#strings.isEmpty(author.twitter)}" class="list-inline-item"><a th:href="${author.twitter}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
+           			<li th:if="${!#strings.isEmpty(author.linkedin)}" class="list-inline-item"><a th:href="${author.linkedin}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
+           			<li th:if="${!#strings.isEmpty(author.github)}" class="list-inline-item"><a th:href="${author.github}" target="new"><img th:src="@{/image/icons/github-icon.png}"/></a></li>
            		</ul>
        			<p th:text="${bio}"></p>
        		</div>

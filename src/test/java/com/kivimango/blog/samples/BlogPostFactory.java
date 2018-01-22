@@ -20,6 +20,7 @@ public class BlogPostFactory {
 	protected String fbProfile = "http://facebook.com/sample.author";
 	protected String twitterProfile = "http://twitter.com/sample-author";
 	protected String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+	protected String githubProfile = "http://www.github.com/";
 	protected Admin author;
 	protected String content = "sample content";
 	protected Date uploaded = new Date();
@@ -50,6 +51,7 @@ public class BlogPostFactory {
 		author.setFbProfile(fbProfile);
 		author.setTwitterProfile(twitterProfile);
 		author.setLinkedinProfile(linkedinProfile);
+		author.setGithubProfile(githubProfile);
 		return author;
 	}
 	

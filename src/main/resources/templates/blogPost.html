@@ -40,18 +40,6 @@
            </div>
        </div>
 		<!-- Side Widget -->
-         <div class="card my-4">
-           <h5 class="card-header">Szerző</h5>
-           <div class="card-body text-center">
-           	<img th:src="${post.author.avatar}" class="img-responsive rounded"/>
-           	<br/><br/>
-           	<ul class="inline">
-           		<li class="list-inline-item"><a th:if="${post.author.fbProfile != null}" th:href="${post.author.fbProfile}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
-           		<li class="list-inline-item"><a th:if="${post.author.twitterProfile != null}" th:href="${post.author.twitterProfile}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
-           		<li class="list-inline-item"><a th:if="${post.author.linkedinProfile != null}" th:href="${post.author.linkedinProfile}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
-           	</ul>
-           </div>
-         </div>
          <!-- Categories Widget -->
           <div class="card my-4">
            <h5 class="card-header">Címkék</h5>

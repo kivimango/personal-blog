@@ -28,13 +28,14 @@ public class BlogPostViewTest {
 		String avatar= "http:/google.com/avatar.jpg";
 		String fbProfile = "http://facebook.com/sample.author";
 		String twitterProfile = "http://twitter.com/sample-author";
-		String linkedinProfile = "http://www.linkedin.com/en/sample-author";	
+		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+		String githubProfile = "http://www,github.com/";
 		
 		String testTag = "test-teg";
 		TagView tag = new TagView(testTag);
 		
 		// When
-		AuthorView author = new AuthorView(authorName, avatar, fbProfile, twitterProfile, linkedinProfile);
+		AuthorView author = new AuthorView(authorName, avatar, fbProfile, twitterProfile, linkedinProfile, githubProfile);
 		
 		List<TagView> tags = new ArrayList<TagView>();
 		tags.add(tag);
@@ -53,9 +54,10 @@ public class BlogPostViewTest {
 		assertEquals(true, post.getAuthor() instanceof AuthorView);
 		assertEquals(authorName, post.getAuthor().getName());
 		assertEquals(avatar, post.getAuthor().getAvatar());
-		assertEquals(fbProfile, post.getAuthor().getFbProfile());
-		assertEquals(twitterProfile, post.getAuthor().getTwitterProfile());
-		assertEquals(linkedinProfile, post.getAuthor().getLinkedinProfile());
+		assertEquals(fbProfile, post.getAuthor().getFacebook());
+		assertEquals(twitterProfile, post.getAuthor().getTwitter());
+		assertEquals(linkedinProfile, post.getAuthor().getLinkedin());
+		assertEquals(githubProfile, post.getAuthor().getGithub());
 		
 		assertEquals(tags, post.getTags());
 		assertEquals(1, post.getTags().size());

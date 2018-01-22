@@ -19,16 +19,18 @@ public class AuthorViewTest {
 		String fbProfile = "http://facebook.com/author";
 		String twitterProfile = "http://twitter.com/sample-author";
 		String linkedinProfile = "http://www.linkedin.com/en/sample-author";
+		String githubProfile = "http://www,github.com/";
 		
 		// When
-		AuthorView view = new AuthorView(name, avatar, fbProfile, twitterProfile, linkedinProfile);
+		AuthorView view = new AuthorView(name, avatar, fbProfile, twitterProfile, linkedinProfile, githubProfile);
 		
 		// Then
 		assertEquals(name, view.getName());
 		assertEquals(avatar, view.getAvatar());
-		assertEquals(fbProfile, view.getFbProfile());
-		assertEquals(twitterProfile, view.getTwitterProfile());
-		assertEquals(linkedinProfile, view.getLinkedinProfile());
+		assertEquals(fbProfile, view.getFacebook());
+		assertEquals(twitterProfile, view.getTwitter());
+		assertEquals(linkedinProfile, view.getLinkedin());
+		assertEquals(githubProfile, view.getGithub());
 	}
 
 }
