@@ -18,12 +18,12 @@
 			</fieldset>
               	<div class="alert alert-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Hibás cím!</div>
 				<div class="form-group">
-              		<input type="text" placeholder="Cím" name="title" required="required" autofocus="autofocus" class="form-control" th:field="*{title}"/>
+              		<input type="text" placeholder="Cím" name="title" maxlength="150" required="required" autofocus="autofocus" class="form-control" th:field="*{title}"/>
               		<small class="text-muted">Minimum 3, maximum 150 karakter.</small>
               	</div>
               	<div class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Hibás tartalom!</div>
               	<div class="form-group">
-              		<textarea id="editor" placeholder="Tartalom" name="content" required="required" class="form-control" rows="10" th:field="*{content}">Tartalom</textarea>
+              		<textarea id="editor" placeholder="Tartalom" name="content" maxlength="10000" required="required" class="form-control" rows="10" th:field="*{content}">Tartalom</textarea>
               		<small class="text-muted">Minimum 3, maximum 10000 karakter.</small>
               	</div>
               	<div class="form-group">
