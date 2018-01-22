@@ -30,7 +30,7 @@
        		<div class="card-body text-center">
        			<img th:if="${author != null}" th:src="${author.avatar}" class="img-responsive rounded"/>
        			<br/><br/>
-       			<ul class="inline">
+       			<ul th:if="${author != null}" class="inline">
            			<li th:if="${!#strings.isEmpty(author.facebook)}" class="list-inline-item"><a th:href="${author.facebook}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
            			<li th:if="${!#strings.isEmpty(author.twitter)}" class="list-inline-item"><a th:href="${author.twitter}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
            			<li th:if="${!#strings.isEmpty(author.linkedin)}" class="list-inline-item"><a th:href="${author.linkedin}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
