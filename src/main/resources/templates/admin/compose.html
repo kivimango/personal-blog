@@ -23,8 +23,8 @@
               	</div>
               	<div class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Hibás tartalom!</div>
               	<div class="form-group">
-              		<textarea id="editor" placeholder="Tartalom" name="content" maxlength="10000" required="required" class="form-control" rows="10" th:field="*{content}">Tartalom</textarea>
-              		<small class="text-muted">Minimum 3, maximum 10000 karakter.</small>
+              		<textarea id="editor" placeholder="Tartalom" name="content" maxlength="100000" required="required" class="form-control" rows="10" th:field="*{content}">Tartalom</textarea>
+              		<small class="text-muted">Minimum 3, maximum 100000 karakter.</small>
               	</div>
               	<div class="form-group">
               		<input type="text" id="tags" placeholder="Címkék" class="form-control" th:field="*{tags}"/>

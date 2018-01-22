@@ -40,7 +40,7 @@ public class BlogPost {
 	@ManyToOne
 	private Admin author;
 	
-	@Column(length=10000)
+	@Column(length=100000)
 	private String content;
 	
 	private Date uploaded;
