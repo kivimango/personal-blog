@@ -5,11 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import org.kefirsf.bb.BBProcessorFactory;
 import org.kefirsf.bb.TextProcessor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
+import com.kivimango.blog.domain.page.Page;
 
 /**
  * @author kivimango
@@ -35,14 +33,14 @@ public class BlogPostConverter {
 	 * @return
 	 */
 	
-	public Page<BlogPostView> convert(Page<BlogPost> page, Pageable pageable) {
+	public Page<BlogPostView> convert(Page<BlogPost> page) {
 		List<BlogPost> list = page.getContent();
-		List<BlogPostView> convertedList = new ArrayList<BlogPostView>(page.getSize());
+		List<BlogPostView> convertedList = new ArrayList<BlogPostView>(page.getContent().size());
 		int size = list.size();
 		for(int i = 0; i < size; i++) {
 			convertedList.add(convert(list.get(i)));
 		}
-		return new PageImpl<BlogPostView>(convertedList, pageable, page.getTotalElements());
+		return new Page<BlogPostView>(page.getPageNumber(), page.getPagesAvailable(), Collections.unmodifiableList(convertedList));
 	}
 	
 	public List<BlogPostView> convert(final List<BlogPost> list) {
