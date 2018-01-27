@@ -10,9 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit4.SpringRunner;
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.AuthorView;
@@ -20,6 +17,7 @@ import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.TagView;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.form.BlogPostForm;
+import com.kivimango.blog.domain.page.Page;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 import com.kivimango.blog.repositories.AdminRepository;
 import com.kivimango.blog.repositories.BlogPostRepository;
@@ -48,25 +46,21 @@ public class BlogPostServiceImplTest extends BlogPostFactory {
 	@InjectMocks
 	private BlogPostServiceImpl service;
 	
-	private Pageable pageable = new PageRequest(0, 30);
-	
 	@Test
 	public void testFindAllExcludeHiddenShouldReturnPublishedPostsOnly() {
-		given(repo.findAllByHidden(pageable, false)).willReturn(getPublicPostsListwithPagination());
-		Page<BlogPostView> posts = service.findAllExcludeHidden(pageable);
-		for(BlogPostView p : posts) {
+		given(repo.findAllByHidden(1, false)).willReturn(getPublicPostsListwithPagination());
+		Page<BlogPostView> posts = service.findAllExcludeHidden(1);
+		for(BlogPostView p : posts.getContent()) {
 			assertFalse(p.isHidden());
 		}
 	}
 	
 	@Test
 	public void testFindAllShouldReturnAllPostsWithPagination() throws BlogPostNotFoundException {
-		given(repo.findAll(pageable)).willReturn(getPublicPostsListwithPagination());
-		Page<BlogPostView> page = service.findAll(pageable);
-		
-		assertEquals(0, page.getNumber());
-		assertEquals(30, page.getSize());
-		assertEquals(3, page.getNumberOfElements());
+		given(repo.findAll()).willReturn(getPublicPostsListwithPagination());
+		Page<BlogPostView> page = service.findAll();
+	
+		assertEquals(3, page.getContent().size());
 		assertEquals(title, page.getContent().get(0).getTitle());
 		assertEquals(slug, page.getContent().get(0).getSlug());
 		assertEquals(content, page.getContent().get(0).getContent());

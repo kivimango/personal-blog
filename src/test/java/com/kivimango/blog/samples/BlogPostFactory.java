@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import com.kivimango.blog.domain.entity.Admin;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
+import com.kivimango.blog.domain.page.Page;
 
 public class BlogPostFactory {
 
@@ -65,7 +64,7 @@ public class BlogPostFactory {
 		BlogPost postOne = getSamplePostEntity();
 		BlogPost postTwo = getSamplePostEntity();
 		BlogPost postThree = getSamplePostEntity();
-		return new PageImpl<BlogPost>(Arrays.asList(postOne, postTwo, postThree));
+		return new Page<BlogPost>(1, 1, Arrays.asList(postOne, postTwo, postThree));
 	}
 
 }
