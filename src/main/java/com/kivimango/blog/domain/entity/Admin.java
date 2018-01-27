@@ -3,48 +3,19 @@ package com.kivimango.blog.domain.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
-@Entity
-@Table(name="blog_admins")
 public class Admin {
 	
-	@Id
-	@GeneratedValue
 	private Short id;
-	
-	@Column(nullable = false, unique = true)
     private String username;
- 
-	@Column(nullable = false, unique = true)
     private String password;
-    
     private Date lastLogin;
-    
-    @Column(nullable=false,unique=true)
 	private String name;
-	
-	@OneToMany(mappedBy="author")
 	private List<BlogPost> posts = new ArrayList<BlogPost>(0);
-	
-	@Column(length=255)
 	private String avatar;
-	
-	@Column(length=255)
 	private String fbProfile;
-	
-	@Column(length=255)
 	private String twitterProfile;
-	
-	@Column(length=255)
 	private String linkedinProfile;
-	
-	@Column(length=255)
 	private String githubProfile;
 
 	public Short getId() {

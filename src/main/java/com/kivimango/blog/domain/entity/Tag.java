@@ -1,14 +1,7 @@
 package com.kivimango.blog.domain.entity;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 /**
  * @author kivimango
@@ -16,17 +9,10 @@ import javax.persistence.Table;
  * @version 0.1
  */
 
-@Entity
-@Table(name="blog_tags")
 public class Tag {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	private List<BlogPost> post;
-
+	private List<BlogPost> post = new ArrayList<BlogPost>();
 	private String tag;
 
 	public Tag() {

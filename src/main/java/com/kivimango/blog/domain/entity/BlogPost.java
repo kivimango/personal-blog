@@ -3,15 +3,6 @@ package com.kivimango.blog.domain.entity;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 /**
  * Representing a blog post entity.
@@ -23,33 +14,16 @@ import javax.persistence.Table;
  * @version 0.1
  */
 
-@Entity
-@Table(name="blog_posts")
 public class BlogPost {
 	
-	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Integer id;
-	
-	@Column(length=150)
 	private String title;
-	
-	@Column(length=255)
 	private String slug;
-	
-	@ManyToOne
 	private Admin author;
-	
-	@Column(length=100000)
 	private String content;
-	
 	private Date uploaded;
-	
 	private Date edited;
-	
-	@ManyToMany(cascade=CascadeType.ALL)
 	private List<Tag> tags = new ArrayList<Tag>(0);
-
 	private boolean hidden;
 
 	public BlogPost() {

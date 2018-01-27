@@ -1,21 +1,11 @@
 package com.kivimango.blog.domain.entity;
 
 import java.sql.Timestamp;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name="blog_login_attempts")
 public class LoginAttempt {
 	
-	@Id
-	@GeneratedValue
 	private Integer id;
-	
 	private String ipAdress;
-	
 	private Timestamp attemptDate;
 
 	public LoginAttempt(String ipAdress, Timestamp attemptDate) {
