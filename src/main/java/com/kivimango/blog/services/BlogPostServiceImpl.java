@@ -49,8 +49,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 	
 	@Override
-	public Page<BlogPostView> findAll(int pageNum) {
-		Page<BlogPost> posts = postRepository.findAll(pageNum);
+	public Page<BlogPostView> findAll() {
+		Page<BlogPost> posts = postRepository.findAll();
 		return converter.convert(posts);
 	}
 	

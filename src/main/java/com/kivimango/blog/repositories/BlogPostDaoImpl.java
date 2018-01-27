@@ -25,7 +25,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 	}
 
 	@Override
-	public Page<BlogPost> findAll(int pageNum) {
+	public Page<BlogPost> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}

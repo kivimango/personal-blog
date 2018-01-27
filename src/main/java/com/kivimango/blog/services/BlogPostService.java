@@ -24,12 +24,12 @@ public interface BlogPostService {
 	Page<BlogPostView> findAllExcludeHidden(int pageNum);
 	
 	/**
-	 * Finding all the posts including hidden ordered by the upload date with pagination.
-	 * @param number of the requested page
+	 * Finding all the posts including hidden ordered by the upload date without pagination.
+	 * @param
 	 * @return
 	 */
 	
-	Page<BlogPostView> findAll(int pageNum);
+	Page<BlogPostView> findAll();
 	
 	/**
 	 * Finding the last 5 blogpost in the database.
