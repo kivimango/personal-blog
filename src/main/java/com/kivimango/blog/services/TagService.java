@@ -11,6 +11,6 @@ import com.kivimango.blog.domain.entity.Tag;
 
 public interface TagService {
 	
-	public List<Tag> getFirstTenTags();
+	List<Tag> findAll();
 
 }

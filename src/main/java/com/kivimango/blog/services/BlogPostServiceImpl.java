@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.AuthorConverter;
@@ -16,6 +14,7 @@ import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
 import com.kivimango.blog.domain.form.BlogPostForm;
+import com.kivimango.blog.domain.page.Page;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 import com.kivimango.blog.repositories.AdminRepository;
 import com.kivimango.blog.repositories.BlogPostRepository;
@@ -44,15 +43,15 @@ public class BlogPostServiceImpl implements BlogPostService {
 	}
 
 	@Override
-	public Page<BlogPostView> findAllExcludeHidden(Pageable pageable) {
-		Page<BlogPost> posts = postRepository.findAllByHidden(pageable, false);
-		return converter.convert(posts, pageable);
+	public Page<BlogPostView> findAllExcludeHidden(int pageNum) {
+		Page<BlogPost> posts = postRepository.findAllByHidden(pageNum, false);
+		return converter.convert(posts);
 	}
 	
 	@Override
-	public Page<BlogPostView> findAll(Pageable pageable) {
-		Page<BlogPost> posts = postRepository.findAll(pageable);
-		return converter.convert(posts, pageable);
+	public Page<BlogPostView> findAll(int pageNum) {
+		Page<BlogPost> posts = postRepository.findAll(pageNum);
+		return converter.convert(posts);
 	}
 	
 	@Override

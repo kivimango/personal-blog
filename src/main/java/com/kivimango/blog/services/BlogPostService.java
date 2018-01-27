@@ -1,11 +1,10 @@
 package com.kivimango.blog.services;
 
 import java.util.List;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.form.BlogPostForm;
+import com.kivimango.blog.domain.page.Page;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 
 /**
@@ -18,19 +17,19 @@ public interface BlogPostService {
 	
 	/**
 	 * Finding the public posts for the home page ordered by the upload date with pagination.
-	 * @param pageable
+	 * @param number of the requested page
 	 * @return The list of the posts.
 	 */
 	
-	Page<BlogPostView> findAllExcludeHidden(Pageable pageable);
+	Page<BlogPostView> findAllExcludeHidden(int pageNum);
 	
 	/**
 	 * Finding all the posts including hidden ordered by the upload date with pagination.
-	 * @param pageable
+	 * @param number of the requested page
 	 * @return
 	 */
 	
-	Page<BlogPostView> findAll(Pageable pageable);
+	Page<BlogPostView> findAll(int pageNum);
 	
 	/**
 	 * Finding the last 5 blogpost in the database.

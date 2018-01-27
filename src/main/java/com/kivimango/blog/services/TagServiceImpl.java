@@ -15,12 +15,16 @@ import com.kivimango.blog.repositories.TagRepository;
 @Service
 public class TagServiceImpl implements TagService {
 	
-	@Autowired
 	private TagRepository repo;
 
+	@Autowired
+	public TagServiceImpl(TagRepository repo) {
+		this.repo = repo;
+	}
+
 	@Override
-	public List<Tag> getFirstTenTags() {
-		return repo.findTop10ByOrderByTagAsc();
+	public List<Tag> findAll() {
+		return repo.findAll();
 	}
 
 }
