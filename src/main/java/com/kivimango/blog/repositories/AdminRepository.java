@@ -1,7 +1,5 @@
 package com.kivimango.blog.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 import com.kivimango.blog.domain.entity.Admin;
 
 /**
@@ -10,8 +8,7 @@ import com.kivimango.blog.domain.entity.Admin;
  * @version 0.1
  */
 
-@Repository
-public interface AdminRepository extends JpaRepository<Admin, Short> {
+public interface AdminRepository {
 	
 	/**
 	 * Find an admin by its login name - used at authentication
