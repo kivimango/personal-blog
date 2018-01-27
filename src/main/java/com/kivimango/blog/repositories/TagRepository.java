@@ -16,4 +16,6 @@ public interface TagRepository {
 	List<Tag> findTop10ByOrderByTagAsc();
 
 	Tag findByTag(String tag);
+	
+	void save(Tag tag);
 }

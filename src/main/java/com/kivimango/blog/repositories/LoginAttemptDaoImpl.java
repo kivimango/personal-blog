@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import com.kivimango.blog.domain.entity.LoginAttempt;
 
 /**
  * @author kivimango
@@ -30,6 +31,12 @@ public class LoginAttemptDaoImpl implements LoginAttemptRepository {
 	@Override
 	public void deleteAllByIpAdress(String ipAdress) {
 		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void save(LoginAttempt attempt) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

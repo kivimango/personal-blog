@@ -40,4 +40,10 @@ public class TagDaoImpl implements TagRepository {
 		return null;
 	}
 
+	@Override
+	public void save(Tag tag) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

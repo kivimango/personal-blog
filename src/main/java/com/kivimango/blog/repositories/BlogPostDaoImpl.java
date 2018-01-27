@@ -66,4 +66,10 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 		return null;
 	}
 
+	@Override
+	public void save(BlogPost post) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -21,4 +21,5 @@ public interface BlogPostRepository {
 	List<BlogPost> findBySlugIgnoreCaseContaining(String searchedSlug);
 	List<BlogPost> findByContentIgnoreCaseContaining(String searchedContent);
 	List<BlogPost> findFirst5ByOrderByUploadedDesc();
+	void save(BlogPost post);
 }

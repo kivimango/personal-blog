@@ -1,5 +1,6 @@
 package com.kivimango.blog.repositories;
 
+import java.util.List;
 import com.kivimango.blog.domain.entity.Admin;
 
 /**
@@ -27,5 +28,9 @@ public interface AdminRepository {
 	 */
 	
 	Admin findByName(String name);
+	
+	List<Admin> findAll();
+	
+	void save(Admin admin);
 
 }
