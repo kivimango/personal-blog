@@ -13,6 +13,7 @@ import com.kivimango.blog.domain.page.Page;
 
 public interface BlogPostRepository {
 	
+	Page<BlogPost> findAll(int pageNum);
 	Page<BlogPost> findAllByHidden(int pageNum, Boolean status);
 	BlogPost getPostBySlug(String slug);
 	List<BlogPost> findByTags(Tag tag);

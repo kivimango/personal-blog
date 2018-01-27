@@ -25,6 +25,12 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 	}
 
 	@Override
+	public Page<BlogPost> findAll(int pageNum) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public Page<BlogPost> findAllByHidden(int pageNum, Boolean status) {
 		// TODO Auto-generated method stub
 		return null;
@@ -41,21 +47,9 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	@Override
-	public List<BlogPost> findByTitleIgnoreCaseContaining(String searchedTitle) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<BlogPost> findBySlugIgnoreCaseContaining(String searchedSlug) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<BlogPost> findByContentIgnoreCaseContaining(String searchedContent) {
+	public List<BlogPost> findByTitleOrSlugOrContentOrTags(String query) {
 		// TODO Auto-generated method stub
 		return null;
 	}
