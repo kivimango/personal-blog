@@ -2,12 +2,10 @@ package com.kivimango.blog.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import com.kivimango.blog.services.AdminService;
 import com.kivimango.blog.services.BlogPostService;
 import com.kivimango.blog.repositories.TagRepository;
@@ -44,13 +42,13 @@ public class HomeController {
 	}
 
 	@GetMapping("/")
-	public String homePage(Model model, @PageableDefault(value=5, page=0, sort="uploaded", direction=Direction.DESC) Pageable pageable) {
+	public String homePage(Model model, @RequestParam(name="page", defaultValue="1") int pageNum) {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
 		model.addAttribute("bio", bio);
 		model.addAttribute("author", admin.findFirst());
 		model.addAttribute("tags", tags.findAll());
-		model.addAttribute("posts", posts.findAllExcludeHidden(pageable));
+		model.addAttribute("posts", posts.findAllExcludeHidden(pageNum));
 		return HOME_PAGE;
 	}
 	
@@ -61,8 +59,8 @@ public class HomeController {
 	 */
 	
 	@GetMapping("megtobb")
-	public String infiniteScrolling(Model model, @PageableDefault(value=5, page=0, sort="uploaded", direction=Direction.DESC) Pageable pageable) {
-		model.addAttribute("posts", posts.findAllExcludeHidden(pageable));
+	public String infiniteScrolling(Model model, @RequestParam(name="page", defaultValue="1") int pageNum) {
+		model.addAttribute("posts", posts.findAllExcludeHidden(pageNum));
 		return "fragments/posts";
 	}
 

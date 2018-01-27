@@ -45,7 +45,7 @@ public class BlogPostController {
 		model.addAttribute("title", title + " - " + description);
 		model.addAttribute("post", posts.getPostBySlug(slug));
 		model.addAttribute("recentPosts", posts.findRecentPosts());
-		model.addAttribute("tags", tags.getFirstTenTags());
+		model.addAttribute("tags", tags.findAll());
 		return DETAIL_PAGE;
 	}
 

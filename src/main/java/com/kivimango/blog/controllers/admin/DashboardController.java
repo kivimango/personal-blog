@@ -3,9 +3,6 @@ package com.kivimango.blog.controllers.admin;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -59,11 +56,11 @@ public class DashboardController {
 	
 	@GetMapping("/dashboard/posts")
 	public String listPosts(@ModelAttribute("message") String flashMessage, Model model, 
-			@PageableDefault(value=25, page=0, sort="uploaded", direction=Direction.DESC) Pageable pageable, RedirectAttributes attr, @AuthenticationPrincipal AdminDetail currentAdmin) {
+			RedirectAttributes attr, @AuthenticationPrincipal AdminDetail currentAdmin) {
 		if(flashMessage != null) {
 			model.addAttribute("flashMessage", flashMessage);
 		}
-		model.addAttribute("posts", blogposts.findAll(pageable));
+		model.addAttribute("posts", blogposts.findAll());
 		model.addAttribute("name", currentAdmin.getUsername());
 		model.addAttribute("avatar", currentAdmin.getAvatar());
 		model.addAttribute("title", title);
