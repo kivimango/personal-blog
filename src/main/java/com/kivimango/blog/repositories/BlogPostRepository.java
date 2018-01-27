@@ -16,10 +16,7 @@ public interface BlogPostRepository {
 	Page<BlogPost> findAllByHidden(int pageNum, Boolean status);
 	BlogPost getPostBySlug(String slug);
 	List<BlogPost> findByTags(Tag tag);
-	//List<BlogPost> findByTitleOrSlugOrContentOrTags(String query, String query2, String query3, List<Tag> tags);
-	List<BlogPost> findByTitleIgnoreCaseContaining(String searchedTitle);
-	List<BlogPost> findBySlugIgnoreCaseContaining(String searchedSlug);
-	List<BlogPost> findByContentIgnoreCaseContaining(String searchedContent);
+	List<BlogPost> findByTitleOrSlugOrContentOrTags(String query);
 	List<BlogPost> findFirst5ByOrderByUploadedDesc();
 	void save(BlogPost post);
 }

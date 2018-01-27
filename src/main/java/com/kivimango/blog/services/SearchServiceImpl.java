@@ -30,31 +30,9 @@ public class SearchServiceImpl implements SearchService {
 	@Override
 	public List<BlogPostView> search(String query) {
 		List<BlogPost> result = new ArrayList<BlogPost>();
-		result.addAll(postRepository.findByTitleIgnoreCaseContaining(query));
-		
-		// Search results may contains duplicate elements, checking for uniqueness
-		
-		List<BlogPost> foundBySlug = postRepository.findBySlugIgnoreCaseContaining(query);
-		addUnique(result, foundBySlug);
-		
-		List<BlogPost> foundByContent = postRepository.findByContentIgnoreCaseContaining(query);
-		addUnique(result, foundByContent);
-		
-		// TODO: add search by tags
-		// TODO: merge the 3 search method into one excluding duplicates and hidden posts
-		
+		result.addAll(postRepository.findByTitleOrSlugOrContentOrTags(query));
 		focusContent(query, result);
 		return converter.convert(result);
-	}
-	
-	/**
-	 * Adding the unique elements of a list to the appending list
-	 */
-	
-	private void addUnique(List<BlogPost> result, List<BlogPost> part) {
-		for(int i=0; i<part.size(); i++) {
-			if(!result.contains(part.get(i))) result.add(part.get(i));
-		}
 	}
 	
 	private void focusContent(String query, List<BlogPost> result) {
@@ -62,6 +40,7 @@ public class SearchServiceImpl implements SearchService {
 			String originalContent = result.get(i).getContent();
 			String focusedcontent = focusOnKeyword(originalContent, query);
 			BlogPost bp = result.get(i);
+			//bp.setContent(focusedcontent);
 			result.set(i, bp);
 		}
 	}
