@@ -44,7 +44,6 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 				+ " LEFT JOIN " + Schema.TAGS_TABLE+" ON "+Schema.POST_TAGS_LOOKUP_TABLE+".tags_id = " +Schema.TAGS_TABLE+".t_id"
 				+ " GROUP BY content, uploaded ORDER BY uploaded DESC;";
 		posts = jdbc.query(query, new BlogPostRowMapper(author));
-		System.out.println(posts);
 		return posts;
 	}
 	
