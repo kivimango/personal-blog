@@ -23,20 +23,23 @@ public class LoginAttemptDaoImpl implements LoginAttemptRepository {
 	}
 
 	@Override
-	public Integer countByAttemptDateBetween(Timestamp timeWindowStart, Timestamp now) {
-		// TODO Auto-generated method stub
-		return null;
+	public Integer countByAttemptDateBetween(String ipAdress, Timestamp timeWindowStart, Timestamp now) {
+		String query = "SELECT COUNT(la_id) as attemptCount FROM BLOG_LOGIN_ATTEMPTS "
+				+ "WHERE time_stamp BETWEEN ? AND ? AND ip_adress = ?;";
+		return jdbc.queryForObject(query, new Object[] {timeWindowStart, now, ipAdress}, (rs, i) -> rs.getInt("attemptCount"));
 	}
 
 	@Override
 	public void deleteAllByIpAdress(String ipAdress) {
-		// TODO Auto-generated method stub
+		String query = "DELETE FROM " + Schema.LOGIN_ATTEMPTS_TABLE + " WHERE ip_adress = ?;";
+		jdbc.update(query, new Object[] {ipAdress});
 	}
 
 	@Override
 	public void save(LoginAttempt attempt) {
-		// TODO Auto-generated method stub
-		
+		String query = "INSERT INTO " + Schema.LOGIN_ATTEMPTS_TABLE + " (ip_adress, time_stamp) "
+				+ "VALUES(?, ?);";
+		jdbc.update(query, new Object[] {attempt.getIpAdress(), attempt.getAttemptDate()});
 	}
 
 }

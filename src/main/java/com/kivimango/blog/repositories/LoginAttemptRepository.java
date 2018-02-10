@@ -11,7 +11,7 @@ import com.kivimango.blog.domain.entity.LoginAttempt;
 
 public interface LoginAttemptRepository {
 	
-	Integer countByAttemptDateBetween(Timestamp timeWindowStart, Timestamp now);
+	Integer countByAttemptDateBetween(String ipAdress, Timestamp timeWindowStart, Timestamp now);
 	
 	void deleteAllByIpAdress(String ipAdress);
 	
