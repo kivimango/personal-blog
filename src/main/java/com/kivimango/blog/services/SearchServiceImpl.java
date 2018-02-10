@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.kivimango.blog.domain.AuthorConverter;
 import com.kivimango.blog.domain.BlogPostConverter;
 import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.entity.BlogPost;
@@ -20,7 +19,7 @@ import com.kivimango.blog.repositories.BlogPostRepository;
 public class SearchServiceImpl implements SearchService {
 	
 	private BlogPostRepository postRepository;
-	private BlogPostConverter converter = new BlogPostConverter(new AuthorConverter());
+	private BlogPostConverter converter = new BlogPostConverter();
 
 	@Autowired
 	public SearchServiceImpl(BlogPostRepository postRepository) {
@@ -31,7 +30,7 @@ public class SearchServiceImpl implements SearchService {
 	public List<BlogPostView> search(String query) {
 		List<BlogPost> result = new ArrayList<BlogPost>();
 		result.addAll(postRepository.findByTitleOrSlugOrContentOrTags(query));
-		focusContent(query, result);
+		//focusContent(query, result);
 		return converter.convert(result);
 	}
 	

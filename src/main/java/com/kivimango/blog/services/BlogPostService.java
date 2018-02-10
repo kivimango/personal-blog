@@ -1,7 +1,6 @@
 package com.kivimango.blog.services;
 
 import java.util.List;
-import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.form.BlogPostForm;
 import com.kivimango.blog.domain.page.Page;
@@ -29,7 +28,7 @@ public interface BlogPostService {
 	 * @return
 	 */
 	
-	Page<BlogPostView> findAll();
+	List<BlogPostView> findAll();
 	
 	/**
 	 * Finding the last 5 blogpost in the database.
@@ -52,7 +51,7 @@ public interface BlogPostService {
 	 * @throws AuthorNotFoundException 
 	 */
 	
-	BlogPostView save(BlogPostForm form, AdminDetail author);
+	BlogPostView save(BlogPostForm form);
 	
 	/**
 	 * Modifies an existing post in the database
