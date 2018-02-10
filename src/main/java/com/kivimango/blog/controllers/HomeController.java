@@ -6,8 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import com.kivimango.blog.services.AdminService;
 import com.kivimango.blog.services.BlogPostService;
+import com.kivimango.blog.domain.Author;
 import com.kivimango.blog.repositories.TagRepository;
 
 /** 
@@ -30,15 +30,15 @@ public class HomeController {
 	
 	private BlogPostService posts;
 	private TagRepository tags;
-	private AdminService admin;
+	private Author author;
 	
 	private static final String HOME_PAGE = "home";
 	
 	@Autowired
-	public HomeController(BlogPostService posts, TagRepository tags, AdminService admin) {
+	public HomeController(BlogPostService posts, TagRepository tags, Author author) {
 		this.posts = posts;
 		this.tags = tags;
-		this.admin = admin;
+		this.author = author;
 	}
 
 	@GetMapping("/")
@@ -46,7 +46,7 @@ public class HomeController {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
 		model.addAttribute("bio", bio);
-		model.addAttribute("author", admin.findFirst());
+		model.addAttribute("author", author);
 		model.addAttribute("tags", tags.findAll());
 		model.addAttribute("posts", posts.findAllExcludeHidden(pageNum));
 		return HOME_PAGE;

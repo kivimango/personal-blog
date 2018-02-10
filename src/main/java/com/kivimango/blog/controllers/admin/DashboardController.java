@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.kivimango.blog.domain.AdminDetail;
 import com.kivimango.blog.domain.form.BlogPostForm;
+import com.kivimango.blog.exception.AlreadExistException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 import com.kivimango.blog.services.BlogPostService;
 
@@ -71,7 +72,7 @@ public class DashboardController {
 	public String newPostForm(Model model, @AuthenticationPrincipal AdminDetail currentAdmin) {
 		model.addAttribute("name", currentAdmin.getUsername());
 		model.addAttribute("avatar", currentAdmin.getAvatar());
-		model.addAttribute("post", new BlogPostForm());
+		model.addAttribute("blogPostForm", new BlogPostForm());
 		model.addAttribute("title", title);
 		return POST_COMPOSE_FORM;
 	}
@@ -80,10 +81,13 @@ public class DashboardController {
 	public String addPost(@Valid BlogPostForm form, BindingResult result, final RedirectAttributes redAttrs, Model model, 
 			@AuthenticationPrincipal AdminDetail currentAdmin) {
 		if(result.hasErrors()) {
-			model.addAttribute("post", form);
 			return POST_COMPOSE_FORM;
 		}
-		blogposts.save(form, currentAdmin);
+		try { blogposts.save(form);
+		} catch (AlreadExistException aee) {
+			result.rejectValue("title", "postAlreadyExists");
+			return POST_COMPOSE_FORM;
+		}
 		redAttrs.addFlashAttribute("message", "Blogbejegyzés sikeresen feltöltve !");
 		return REDIRECT_TO_DASHBOARD_POSTS;
 	}
