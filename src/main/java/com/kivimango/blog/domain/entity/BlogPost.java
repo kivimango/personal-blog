@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.kivimango.blog.domain.Author;
+
 /**
  * Representing a blog post entity.
  * BlogPost entities will be converted by the BlogPostConverter for the view 
@@ -19,7 +21,7 @@ public class BlogPost {
 	private Integer id;
 	private String title;
 	private String slug;
-	private Admin author;
+	private Author author;
 	private String content;
 	private Date uploaded;
 	private Date edited;
@@ -31,6 +33,10 @@ public class BlogPost {
 	
 	public Integer getId() {
 		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -49,11 +55,11 @@ public class BlogPost {
 		this.slug = slug;
 	}
 
-	public Admin getAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(Admin author) {
+	public void setAuthor(Author author) {
 		this.author = author;
 	}
 

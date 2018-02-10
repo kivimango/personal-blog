@@ -17,14 +17,8 @@ import com.kivimango.blog.domain.page.Page;
 
 public class BlogPostConverter {
 	
-	private AuthorConverter authorConverter;
-	
 	private TextProcessor bbCodeConverter = BBProcessorFactory
 			.getInstance().create();
-
-	public BlogPostConverter(AuthorConverter authorConverter) {
-		this.authorConverter = authorConverter;
-	}
 	
 	/**
 	 * Converts a paginated BlogPost list into a paginated BlogPostView DTO
@@ -61,7 +55,7 @@ public class BlogPostConverter {
 	 */
 	
 	public BlogPostView convert(final BlogPost post) {
-		BlogPostView converted = new BlogPostView(post.getTitle(), post.getSlug(), authorConverter.convert(post.getAuthor()),
+		BlogPostView converted = new BlogPostView(post.getTitle(), post.getSlug(), post.getAuthor(),
 				bbCodeConverter.process(post.getContent()), post.getUploaded(), post.getEdited(), convertTags(post.getTags()), post.isHidden());
 		return converted;
 	}

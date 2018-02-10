@@ -18,7 +18,7 @@ public class BlogPostView {
 	
 	private String title;
 	private String slug;
-	private AuthorView author;
+	private Author author;
 	private String content;
 	private Date uploaded;
 	private Date edited;
@@ -27,7 +27,7 @@ public class BlogPostView {
 	
 	// TODO : consider using the Builder pattern
 
-	public BlogPostView(String title, String slug, AuthorView author, String content, Date uploaded, Date edited,
+	public BlogPostView(String title, String slug, Author author, String content, Date uploaded, Date edited,
 			List<TagView> tags, boolean hidden) {
 		this.title = title;
 		this.slug = slug;
@@ -47,7 +47,7 @@ public class BlogPostView {
 		return slug;
 	}
 
-	public AuthorView getAuthor() {
+	public Author getAuthor() {
 		return author;
 	}
 

@@ -17,6 +17,10 @@ public class Tag {
 
 	public Tag() {
 	}
+	
+	public Tag(String tag) {
+		this.tag = tag;
+	}
 
 	public Integer getId() {
 		return id;

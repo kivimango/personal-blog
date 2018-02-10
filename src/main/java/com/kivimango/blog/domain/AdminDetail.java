@@ -4,18 +4,20 @@ import java.util.Collection;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
-import com.kivimango.blog.domain.entity.Admin;
 
 public class AdminDetail implements UserDetails {
 	
 	private static final long serialVersionUID = 4936144782124807718L;
+	private Author admin;
+	private String password;
+	private String accountName;
 	
-	private Admin admin;
-	
-	public AdminDetail(Admin admin) {
-		this.admin = admin;
+	public AdminDetail(Author author, String loginName, String pw) {
+		this.admin = author;
+		this.accountName = loginName;
+		this.password = pw;
 	}
-	
+
 	public String getName() {
 		return admin.getName();
 	}
@@ -31,12 +33,12 @@ public class AdminDetail implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return admin.getPassword();
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		return admin.getUsername();
+		return accountName;
 	}
 
 	@Override
