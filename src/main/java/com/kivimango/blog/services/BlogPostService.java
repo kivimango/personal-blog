@@ -4,6 +4,7 @@ import java.util.List;
 import com.kivimango.blog.domain.BlogPostView;
 import com.kivimango.blog.domain.form.BlogPostForm;
 import com.kivimango.blog.domain.page.Page;
+import com.kivimango.blog.exception.AlreadExistException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 
 /**
@@ -51,7 +52,7 @@ public interface BlogPostService {
 	 * @throws AuthorNotFoundException 
 	 */
 	
-	BlogPostView save(BlogPostForm form);
+	BlogPostView save(BlogPostForm form) throws AlreadExistException;
 	
 	/**
 	 * Modifies an existing post in the database

@@ -14,6 +14,7 @@ import com.kivimango.blog.domain.entity.BlogPost;
 import com.kivimango.blog.domain.entity.Tag;
 import com.kivimango.blog.domain.form.BlogPostForm;
 import com.kivimango.blog.domain.page.Page;
+import com.kivimango.blog.exception.AlreadExistException;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
 import com.kivimango.blog.repositories.BlogPostRepository;
 import com.kivimango.blog.repositories.TagRepository;
@@ -64,16 +65,17 @@ public class BlogPostServiceImpl implements BlogPostService {
 	
 	@Override
 	@Transactional
-	public BlogPostView save(BlogPostForm form) {
+	public BlogPostView save(BlogPostForm form) throws AlreadExistException {
 		BlogPost newPost = savePost(form);
 		newPost.setTags(saveTags(form.getTags(), newPost));
 		return converter.convert(newPost);
 	}
 
-	private BlogPost savePost(BlogPostForm form) {
+	private BlogPost savePost(BlogPostForm form) throws AlreadExistException {
 		BlogPost newPost = new BlogPost();
 		newPost.setTitle(form.getTitle());
 		newPost.setSlug(makeSlugFrom(form.getTitle()));
+		if(postRepository.isExists(newPost.getSlug())) throw new AlreadExistException("BlogPost with slug "+newPost.getSlug()+" already exists");
 		newPost.setContent(form.getContent());
 		newPost.setUploaded(new Date());
 		newPost = postRepository.save(newPost);
