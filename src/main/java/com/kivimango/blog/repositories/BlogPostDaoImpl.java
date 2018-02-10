@@ -149,7 +149,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 	
 	@Override
 	public boolean isExists(String slug) {
-		String query = "COUNT(blogpost_id) as bid FROM " + Schema.POSTS_TABLE + " WHERE slug = ?;";
+		String query = "SELECT COUNT(blogpost_id) as bid FROM " + Schema.POSTS_TABLE + " WHERE slug = ?;";
 		int count = jdbc.queryForObject(query, new Object[]{slug}, (rs, i) -> {
 			return rs.getInt("bid");
 		});
