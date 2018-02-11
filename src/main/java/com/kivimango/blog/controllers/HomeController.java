@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.kivimango.blog.services.BlogPostService;
 import com.kivimango.blog.domain.Author;
@@ -62,6 +63,18 @@ public class HomeController {
 	public String infiniteScrolling(Model model, @RequestParam(name="page", defaultValue="1") int pageNum) {
 		model.addAttribute("posts", posts.findAllExcludeHidden(pageNum));
 		return "fragments/posts";
+	}
+	
+	@GetMapping("/cimke/{tag}")
+	public String showPostsByTag(@PathVariable String tag, Model model) {
+		model.addAttribute("blogTitle", title);
+		model.addAttribute("title", title + " - " + description);
+		model.addAttribute("bio", bio);
+		model.addAttribute("author", author);
+		model.addAttribute("tags", tags.findAll());
+		model.addAttribute("tag", tag);
+		model.addAttribute("posts", posts.findPostsByTag(tag));
+		return "postsByTag";
 	}
 
 }

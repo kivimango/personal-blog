@@ -29,8 +29,7 @@ public class SearchController {
 	@Value("${blog.description}")
 	private String description;
 	
-	private static final String SEARCH_FORM = "searchForm";
-	private static final String SEARCH_RESULTS = "searchResults";
+	private static final String SEARCH_PAGE= "search";
 
 	@Autowired
 	public SearchController(SearchService searchService) {
@@ -41,7 +40,8 @@ public class SearchController {
 	public String searchForm(Model model) {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
-		return SEARCH_FORM;
+		model.addAttribute("query", "");
+		return SEARCH_PAGE;
 	}
 	
 	@PostMapping("/keres")
@@ -52,7 +52,7 @@ public class SearchController {
 		List<BlogPostView> results = new ArrayList<BlogPostView>();
 		if(query != null && query.length() >= 3) results = searchService.search(query);
 		model.addAttribute("results", results);
-		return SEARCH_RESULTS;
+		return SEARCH_PAGE;
 	}
 	
 }
