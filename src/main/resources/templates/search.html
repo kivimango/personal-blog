@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" layout:decorator="/layouts/main">
+<body>
+<div layout:fragment="content">
+	<div class="container">
+		<div class="row">
+			<div class="offset-3 col-lg-6">
+				<form th:action="@{/keres}" method="post">
+					<div class="input-group">
+						<input type="text" placeholder="Keresés" th:value="${query}" id="q" name="q" pattern=".{3,}" required="required" autofocus="autofocus" class="form-control"/>
+							<button type="submit" class="btn btn-lg">
+								<span class="glyphicon glyphicon-search"></span>
+							</button>
+					</div>
+				</form>
+				<div th:if="${results != null}" class="col-lg-12 text-center" style="margin-top:15px;font-style:italic;">
+					<h2 th:if="${results.size() eq 0}" th:text="#{searchNoResults}"></h2>
+				</div>
+			</div>			
+		</div>
+		<div style="margin-bottom:15px;"></div>
+		<div class="row">
+			<div class="col-lg-12">
+			<div class="context">
+				<div th:include="fragments/list :: postList(${results})">
+				</div>
+			</div>
+			<th:block >
+				<script type="text/javascript" th:src="@{js/plugins/mark.min.js}" charset="UTF-8"></script>
+				<script type="text/javascript">
+					$(document).ready(function() {
+						var marker = new Mark(document.querySelector(".context"));
+						var keyword = document.getElementById("q").value;
+						marker.mark(keyword);
+					});
+				</script>
+			</th:block>
+			</div>
+		</div>
+	</div>
+	
+</div>
+</body>
+</html>

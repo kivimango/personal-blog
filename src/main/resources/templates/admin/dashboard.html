@@ -1,18 +1,16 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head th:include="admin/fragments/header :: head">
+<html xmlns:th="http://thymeleaf.org" layout:decorator="/admin/layouts/dashboard">
+<head>
+	<title th:text="#{dbHomeTitle}"></title>
 </head>
 <body>
-<nav th:include="admin/fragments/navbar :: nav"></nav>
-<div class="container-fluid">
-	<div class="row">
-	<nav th:include="admin/fragments/menu :: nav"></nav>
-	
-	<div role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
-          <h1>Vezérlőpult</h1>
-    </div>
+	<div layout:fragment="content">
+		<div class="row">
+			<nav th:include="admin/fragments/menu :: nav"></nav>
+			<div role="main" class="col-sm-9 ml-sm-auto col-md-10 pt-3">
+          		<h1 th:text="#{dbHomeTitle}"></h1>
+    		</div>
+		</div>
 	</div>
-</div>
-<footer th:include="fragments/footer :: footer"></footer>
 </body>
 </html>

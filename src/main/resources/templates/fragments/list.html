@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<body>
+<div th:fragment="postList(posts)">
+	<div class="row blogpost-box" th:each="post : ${posts}">
+		<div class="card-body">
+			<h2 class="card-title"><a th:href="@{'/poszt/' + ${post.slug}}" th:text="${post.title}"></a></h2> <hr/>
+			<ul class="inline blogpost-header">
+				<li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <b th:text="${post.author.name}"></b></li>
+				<li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
+				<li class="list-inline-item"><span class="glyphicon glyphicon-tags"></span></li>
+				<li th:each="t : ${post.tags}" class="list-inline-item">
+					<a th:href="@{'/cimke/'+${t.tag}}" th:text="'#'+${t.tag}"></a>
+				</li>
+			</ul>
+		</div>
+		<div class="card-body">
+			<p class="card-text blogpost-excerpt" th:utext="${post.content}"></p>
+		</div>
+	</div>
+</div>
+</body>
+</html>

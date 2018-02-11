@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+	<title th:text="${title}"></title>
+	<meta charset="utf-8" />	
+	<meta name="description" content="" />
+	<meta name="keywords" content="" />
+	<meta name="robots" content="index,follow" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<link rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" media="screen" th:href="@{/css/style.css}"/>
+    <script th:src="@{/js/jquery-3.2.1.min.js}"></script>
+	<script th:src="@{/js/bootstrap.min.js}"></script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-collapse">
+		<div class="container">
+			<a class="navbar-brand" th:href="@{/}" th:text="${blogTitle}"></a>
+			<form th:action="@{/keres}" method="post" class="form-inline">
+				<input class="form-control mr-sm-2" type="text" name="q" pattern=".{3,}" th:placeholder="#{navbarSearch}"/>
+				<button type="submit" class="btn btn">
+					<span class="glyphicon glyphicon-search"></span>
+				</button>
+			</form>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarResponsive">
+				<ul class="navbar-nav ml-auto">
+				<!--  rss icon here -->
+				</ul>
+			</div>
+		</div>
+	</nav>
+	
+	<div layout:fragment="content">
+	</div>
+	<footer class=" bg-dark footer">
+		<div class="container">
+			<p class="m-0 text-center text-white">Copyright &copy; kivimango, 2018</p>
+		</div>
+	</footer>
+</body>
+</html>

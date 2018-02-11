@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<body>
+<div th:fragment="form">
+					<div class="alert alert-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Hibás cím!</div>
+					<div class="form-group">
+	              		<input type="text" th:placeholder="#{cmpInpTitlePlch}" name="title" maxlength="150" required="required" autofocus="autofocus" class="form-control" th:field="*{title}"/>
+	              		<small class="text-muted" th:text="#{cmpTitleInf}"></small>
+	              	</div>
+	              	<div class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Hibás tartalom!</div>
+	              	<div class="form-group">
+	              		<textarea id="editor" th:placeholder="#{cmpInpCntPlch}" name="content" maxlength="100000" required="required" class="form-control" rows="10" th:field="*{content}"></textarea>
+	              		<small class="text-muted" th:text="#{cmpCntInf}"></small>
+	              	</div>
+	              	<div class="form-group">
+	              		<input type="text" id="tags" th:placeholder="#{cmpInpTgsPlch}" class="form-control" th:field="*{tags}"/>
+	              		<small class="text-muted" th:text="#{cmpTgsInf}"></small>
+	              	</div>
+</div>
+</body>
+</html>

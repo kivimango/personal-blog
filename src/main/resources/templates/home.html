@@ -1,66 +1,27 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head th:include="fragments/header :: head">
+<html xmlns:th="http://thymeleaf.org" layout:decorator="/layouts/main">
+<head>
+	<title th:text="${title}"></title>
 </head>
 <body>
-	<nav th:include="fragments/navbar :: nav"></nav>
+	<div layout:fragment="content">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-8" id="posts">
-				<div th:each="post : ${posts}" class="blogpost-box">
-					<div class="card-body">
-						<h2 class="card-title"><a th:href="@{'/poszt/' + ${post.slug}}" th:text="${post.title}"></a></h2> <hr/>
-							<ul class="inline blogpost-header">
-								<li class="list-inline-item"><span class="glyphicon glyphicon-user"></span> <b th:text="${post.author.name}"></b></li>
-								<li class="list-inline-item"><span class="glyphicon glyphicon-calendar"></span> <i th:text="${#dates.format(post.uploaded, 'yyyy.MM.dd')}"></i></li>
-							</ul>
-					</div>
-					<!--<img class="card-img-top" src="http://placehold.it/750x300" th:alt="${post.title}"/>-->
-					<div class="card-body">
-						<p class="card-text blogpost-excerpt" th:utext="${post.content}"></p>
-					</div>
-				</div>
-				<a th:href="@{/megtobb/(page=${posts.number +1})}" class="jscroll-next btn btn-primary btn-block" role="button">Még több</a>
+				<div th:include="/fragments/list :: postList(${posts.content})"></div>
+				<a th:href="@{/megtobb/(page=${posts.pageNumber +1})}" class="jscroll-next btn btn-primary btn-block" 
+				style="margin-bottom: 15px;" role="button" th:text="#{scrollBtnTitle}"></a>
 			</div>
-       
-       <!-- Sidebar Widgets Column -->
-       <div class="col-md-4">
-       	<div class="card my-4">
-       		<h5 class="card-header">Üdvözöllek</h5>
-       		<div class="card-body text-center">
-       			<img th:if="${author != null}" th:src="${author.avatar}" class="img-responsive rounded"/>
-       			<br/><br/>
-       			<ul th:if="${author != null}" class="inline">
-           			<li th:if="${!#strings.isEmpty(author.facebook)}" class="list-inline-item"><a th:href="${author.facebook}" target="new"><img th:src="@{/image/icons/facebook-icon.png}"/></a></li>
-           			<li th:if="${!#strings.isEmpty(author.twitter)}" class="list-inline-item"><a th:href="${author.twitter}" target="new"><img th:src="@{/image/icons/twitter-icon.png}"/></a></li>
-           			<li th:if="${!#strings.isEmpty(author.linkedin)}" class="list-inline-item"><a th:href="${author.linkedin}" target="new"><img th:src="@{/image/icons/linkedin-icon.png}"/></a></li>
-           			<li th:if="${!#strings.isEmpty(author.github)}" class="list-inline-item"><a th:href="${author.github}" target="new"><img th:src="@{/image/icons/github-icon.png}"/></a></li>
-           		</ul>
-       			<p th:text="${bio}"></p>
-       		</div>
-       	</div>
-       	<div class="card my-4">
-       		<h5 class="card-header">Címkék</h5>
-       		<div class="card-body">
-       			<div class="row">
-       				<div class="col-lg-12">
-       				<a th:each="t : ${tags}" th:href="@{'/cimke/' + ${t.tag}}" th:text="'#'+${t.tag}"></a>
-       				</div>
-       			</div>
-       		</div>
-       	</div>
-       </div>
-
-     </div>
-</div>
-     <footer th:include="fragments/footer :: footer"></footer>
-
-     <script th:src="@{/js/plugins/jquery.jscroll.min.js}"></script>
-     <script type="text/javascript">
+      		<div class="col-md-4" th:include="fragments/sidebar :: sidebar">
+     		</div>
+     	</div>
+	</div>
+	<script th:src="@{/js/plugins/jquery.jscroll.min.js}"></script>
+    <script type="text/javascript">
  	$('#posts').jscroll({
      loadingHtml: '<img th:src="@{image/ajax-loader.gif}" class="loading-anim"/>', 
      autoTrigger: false});
  	</script>
-
+</div>
 </body>
 </html>
