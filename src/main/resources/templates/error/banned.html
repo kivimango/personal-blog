@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org">
-<head th:include="fragments/header :: head">
+<html xmlns:th="http://thymeleaf.org" layout:decorator="/layouts/main">
+<head>
+	<title>403</title>
 </head>
 <body>
-	<nav th:include="fragments/navbar :: nav"></nav>
-	<div class="jumbotron text-center" style="background-color: white;">
-		<div class="page-header"><h1>403</h1></div>
-		<p>You are banned from this server !</p>
-		<p>Reason : maximum login attempts limit reached !</p>
+<div layout:fragment="content">
+	<div class="container">
+		<div class="page-header text-center">
+			<div class=""><h1>403</h1></div>
+				<p th:text="#{error403Title}"></p>
+				<p th:text="#{error403Reason}"></p>
+			</div>
 	</div>
 	<div style="margin-bottom:62px;"></div>
-	<footer th:include="fragments/footer :: footer"></footer>
+</div>
 </body>
 </html>
