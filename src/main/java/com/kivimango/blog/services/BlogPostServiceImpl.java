@@ -124,10 +124,12 @@ public class BlogPostServiceImpl implements BlogPostService {
 	
 	private List<Tag> makeTagsFromInputField(String value) {
 		List<Tag> converted = new ArrayList<Tag>();
-		String[] tags = value.split(",");
-		if(tags.length > 0) {
-			for(int i = 0; i<tags.length; i++) {
-				converted.add(new Tag(tags[i]));
+		if(!value.isEmpty()) {
+			String[] tags = value.split(",");
+			if(tags.length > 0) {
+				for(int i = 0; i<tags.length; i++) {
+					converted.add(new Tag(tags[i]));
+				}
 			}
 		}
 		return converted;
