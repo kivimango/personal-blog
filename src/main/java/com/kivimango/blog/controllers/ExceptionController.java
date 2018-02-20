@@ -5,7 +5,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import com.kivimango.blog.exception.BlogPostNotFoundException;
-import com.kivimango.blog.exception.UserNotFoundException;
 
 /**
  * Handling the exceptions thrown by the controllers
@@ -26,13 +25,6 @@ public class ExceptionController {
 	
 	@ExceptionHandler(BlogPostNotFoundException.class)
 	public String postNotFound(Model model) {
-		model.addAttribute("blogTitle", title);
-		model.addAttribute("title", title + " - " + description);
-		return "/error/404";
-	}
-	
-	@ExceptionHandler(UserNotFoundException.class)
-	public String userNotFound(Model model) {
 		model.addAttribute("blogTitle", title);
 		model.addAttribute("title", title + " - " + description);
 		return "/error/404";
