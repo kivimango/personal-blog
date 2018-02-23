@@ -1,5 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org" layout:decorator="/layouts/main">
+<head>
+	<title th:text="${post.title}"></title>
+	<meta property="og:title" th:content="${post.title}"/>
+	<meta th:if="${#strings.length(post.content)} > 30" property="og:description" th:content="${#strings.substring(post.content,0,30)}" /> 
+	<meta property="og:image" th:content="${post.author.avatar}" />
+	<meta property="og:type" content="article" />
+	<meta property="article:published_time" th:content="${post.uploaded}" />
+	<meta th:if="${post.edited != null}" property="article:modified_time" th:content="${post.edited}" />
+</head>
 <body>
 <div layout:fragment="content">
 	<div class="container">

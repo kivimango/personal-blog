@@ -2,6 +2,9 @@
 <html xmlns:th="http://thymeleaf.org" layout:decorator="/layouts/main">
 <head>
 	<title th:text="${title}"></title>
+	<meta property="og:title" th:content="${title}"/>
+	<meta property="og:description" th:content="${bio}"/>
+	<meta property="og:image" th:content="${author.avatar}" />
 </head>
 <body>
 	<div layout:fragment="content">
