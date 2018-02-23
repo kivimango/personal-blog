@@ -16,7 +16,7 @@
 				<fieldset>
 					<legend th:htext="#{editPageTitle}"></legend>
 				</fieldset>
-              	<div th:include="/admin/fragments/composeAndEditForm"></div>
+              	<div th:include="/admin/fragments/composeAndEditForm :: form"></div>
               	<div class="form-group">
               		<input type="submit" class="btn btn-success" value="Mentés"/>
               	</div>
@@ -25,49 +25,13 @@
     	<div th:include="/admin/fragments/sceditor :: sceditor"></div>
 		</div>
 	</div>
-</div>
-<script th:src="@{/js/sceditor/jquery.sceditor.bbcode.min.js}"></script>
-<script th:src="@{/js/sceditor/languages/hu.js}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.12/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-<script th:src="@{/js/plugins/tag-it.min.js}"></script>
-	<script>
-	function determineEditorLanguage() {
-		var languages = ['ar', 'ca', 'cn','cs', 'de', 'el', 'es',
-			'et', 'fa', 'fr', 'gl', 'hu', 'it', 'ja', 'lt', 'nb', 'nl',
-			'pl', 'pt', 'ru', 'sv', 'tr', 'tw', 'uk', 'vi'];
-		
-		if (navigator.languages != undefined) 
-			var browserLang = navigator.languages[0]
-		 if( languages.indexOf(browserLang) > -1 ) {
-			 return browserLang;
-		 }
-		 else 
-		  return 'en';
-	}
-
-	var locale = determineEditorLanguage();	
-		
-    $(function() {
-        // Replace all textarea tags with SCEditor
-        $('textarea').sceditor({
-            plugins: 'bbcode',
-            style: 'js/sceditor/jquery.sceditor.default.min.css',
-            emoticonsRoot : '/image/',
-            locale: locale
-        });
-    });
-    </script>
-    <script type="text/javascript">
-    $(document).ready(function() {
-        $("#tags").tagit();
-    });
-	</script>
 	<script type="text/javascript">
-	$(document).ready(function() {
-		var text = document.getElementById('editor').value;
+    $(document).ready(function() {
+        var text = document.getElementById('editor').value;
 		var bbcode = $("#editor").sceditor('instance').toBBCode(text);
 		$("#editor").sceditor('instance').val(bbcode);
     });
 	</script>
+</div>
 </body>
 </html>
