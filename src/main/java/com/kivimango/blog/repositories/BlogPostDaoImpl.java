@@ -27,11 +27,13 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 	private static final int pageSize = 5;
 	private JdbcTemplate jdbc;
 	private Author author;
+	private static BlogPostRowMapper rowMapper;
 
 	@Autowired
 	public BlogPostDaoImpl(JdbcTemplate jdbc, Author author) {
 		this.jdbc = jdbc;
 		this.author = author;
+		rowMapper = new BlogPostRowMapper(author);
 	}
 	
 	@Override
@@ -41,7 +43,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 				+ " LEFT JOIN " + Schema.POST_TAGS_LOOKUP_TABLE + " ON "+Schema.POST_TAGS_LOOKUP_TABLE+".blog_post_id = " +Schema.POSTS_TABLE+".blogpost_id"
 				+ " LEFT JOIN " + Schema.TAGS_TABLE+" ON "+Schema.POST_TAGS_LOOKUP_TABLE+".tags_id = " +Schema.TAGS_TABLE+".t_id"
 				+ " GROUP BY content, uploaded, blogpost_id, slug, title, edited, hidden ORDER BY uploaded DESC;";
-		posts = jdbc.query(query, new BlogPostRowMapper(author));
+		posts = jdbc.query(query, rowMapper);
 		return posts;
 	}
 	
@@ -63,7 +65,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 				+ " WHERE hidden = false"
 				+ " GROUP BY content, uploaded, blogpost_id, slug, title, edited, hidden ORDER BY uploaded DESC"
 				+ " LIMIT ? OFFSET ?;";
-		posts = jdbc.query(query, new Object[] {pageSize, (pageNum-1) * pageSize}, new BlogPostRowMapper(author));
+		posts = jdbc.query(query, new Object[] {pageSize, (pageNum-1) * pageSize}, rowMapper);
 		return new Page<BlogPost>(pageNum, postCount, posts);
 	}
 
@@ -72,10 +74,10 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 		String query = "SELECT blogpost_id, content, slug, title, edited, uploaded, hidden, string_agg("+Schema.TAGS_TABLE+".tag, ',') as tags FROM " + Schema.POSTS_TABLE 
 				+ " LEFT JOIN " + Schema.POST_TAGS_LOOKUP_TABLE + " ON "+Schema.POSTS_TABLE+".blogpost_id = "+Schema.POST_TAGS_LOOKUP_TABLE+".blog_post_id" 				
 				+ " LEFT JOIN "+Schema.TAGS_TABLE+" ON "+Schema.TAGS_TABLE+".t_id = "+Schema.POST_TAGS_LOOKUP_TABLE+".tags_id"
-				+ " WHERE "+Schema.POSTS_TABLE+".slug = ? AND hidden = false GROUP BY content, uploaded, blogpost_id, slug, title, edited, uploaded, hidden LIMIT 1;";
+				+ " WHERE "+Schema.POSTS_TABLE+".slug = ? GROUP BY content, uploaded, blogpost_id, slug, title, edited, uploaded, hidden LIMIT 1;";
 		BlogPost post = null;
 		try {
-			post =  jdbc.queryForObject(query, new Object[]{slug}, new BlogPostRowMapper(author));
+			post =  jdbc.queryForObject(query, new Object[]{slug}, rowMapper);
 		} catch (EmptyResultDataAccessException ignore) {}
 		return post;
 	}
@@ -88,7 +90,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 				+ "(SELECT "+Schema.POST_TAGS_LOOKUP_TABLE+".BLOG_POST_ID, tag, string_agg(tag, ',') as tags FROM "+Schema.TAGS_TABLE
 				+ " INNER JOIN "+Schema.POST_TAGS_LOOKUP_TABLE+" ON "+Schema.TAGS_TABLE+".T_ID = "+Schema.POST_TAGS_LOOKUP_TABLE+".TAGS_ID AND tag = ?"
 				+ " GROUP BY BLOG_POST_ID, "+Schema.TAGS_TABLE+".tag ) T ON T.BLOG_POST_ID = P.BLOGPOST_ID AND hidden = false;";
-		posts = jdbc.query(query, new Object[]{tag}, new BlogPostRowMapper(author));
+		posts = jdbc.query(query, new Object[]{tag}, rowMapper);
 		return posts;
 	}
 	
@@ -100,7 +102,7 @@ public class BlogPostDaoImpl implements BlogPostRepository {
 				+ " LEFT JOIN " + Schema.TAGS_TABLE+" ON "+Schema.POST_TAGS_LOOKUP_TABLE+".tags_id = " +Schema.TAGS_TABLE+".t_id"
 				+ " WHERE (content LIKE ? OR slug LIKE ? OR title LIKE ?) AND hidden = false"
 				+ " GROUP BY content, uploaded, blogpost_id, slug, title, edited, hidden ORDER BY uploaded DESC;";
-		return jdbc.query(sql, new Object[] {like, like, like}, new BlogPostRowMapper(author));
+		return jdbc.query(sql, new Object[] {like, like, like}, rowMapper);
 	}
 
 	@Override
